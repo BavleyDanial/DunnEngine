@@ -1,0 +1,6 @@
+﻿  Scanning sources for module dependencies...
+  EntryPoint.h
+  Compiling...
+  EntryPoint.h
+  Application.cpp
+  DunnEngine.vcxproj -> C:\dev\TDE\Bin\x64-Release\DunnEngine.lib
