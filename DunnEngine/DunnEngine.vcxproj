@@ -110,7 +110,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DE_DEBUG;SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)DunnEngine\Vendor\SFML\include</AdditionalIncludeDirectories>
@@ -120,7 +120,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>sfml-graphics-s.lib;opengl32.lib;freetype.lib;sfml-window-s.lib;winmm.lib;gdi32.lib;sfml-audio-s.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-system-s.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;opengl32.lib;freetype.lib;sfml-window-s-d.lib;winmm.lib;gdi32.lib;sfml-audio-s-d.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-system-s-d.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)DunnEngine\Vendor\SFML\lib\</AdditionalLibraryDirectories>
@@ -153,10 +153,13 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\EntryPoint.h" />
+    <ClCompile Include="Source\Graphics\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\DunnEngine.h" />
+    <ClInclude Include="Source\Graphics\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

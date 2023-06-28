@@ -15,6 +15,16 @@ public:
 
 	}
 
+	void OnKeyEvent() override
+	{
+
+	}
+
+	void OnMouseEvent() override
+	{
+
+	}
+
 private:
 
 };
