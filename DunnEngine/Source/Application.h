@@ -8,8 +8,8 @@ namespace DunnEngine {
 	class Application
 	{
 	public:
-		Application();
-		~Application();
+		Application();  // Constructs the Application
+		~Application(); // Destroys the Application
 
 		// Internal methods that take care of backend stuff
 		void Run();
@@ -21,12 +21,12 @@ namespace DunnEngine {
 		virtual void OnKeyEvent() = 0;
 		virtual void OnMouseEvent() = 0;
 	private:
-		std::shared_ptr<Window> m_Window;
-		bool m_IsRunning = true;         // Keeping track if the application is still running
+		std::shared_ptr<Window> m_Window; // Stores a pointer to the window
+		bool m_IsRunning = true;          // Keeping track if the application is still running
 
 	private:
-		static Application* s_Instance;  // Instance of the application
+		static Application* s_Instance;   // Stores the ONLY instance of the application
 	};
 
-	Application* CreateApplication();    // Function to create the application instance, it MUST be defined in the client
+	Application* CreateApplication();     // Function to create the application instance, it MUST be defined in the client
 }

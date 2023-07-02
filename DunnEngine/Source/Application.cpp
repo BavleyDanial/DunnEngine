@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include <SFML/Graphics.hpp>
+#include "Logger.h"
 
 
 #include "Core.h"
@@ -11,7 +12,9 @@ namespace DunnEngine {
 
 	Application::Application()
 	{
-        DE_CORE_ASSERT(!s_Instance, "Application already exists!")
+        Logger::Init();
+        DE_CORE_ASSERT(!s_Instance, "Application already exists!");
+        LOG_CORE_INFO("DunnEngine instanstiated!");
         s_Instance = this;
 
         m_Window = std::make_shared<Window>("Hello", (uint32_t)1280, (uint32_t)720);

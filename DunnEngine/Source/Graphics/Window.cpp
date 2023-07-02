@@ -10,11 +10,14 @@ namespace DunnEngine {
 		m_WindowProps.IsFullScreen = fullScreen;
 		m_WindowProps.IsVSync = vSync;
 
-		m_Window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), title);
+		m_Window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), title); // create the window with the specified width, height, and title
+		SetVSync(vSync);
+		SetFullScreen(fullScreen);
 	}
 
 	Window::~Window()
 	{
+
 	}
 
 	void Window::SetVSync(bool enabled)

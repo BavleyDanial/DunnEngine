@@ -7,7 +7,7 @@ class Sandbox : public DunnEngine::Application
 public:
 	void OnInit() override
 	{
-		std::cout << "Initialized successfully!" << std::endl;
+		LOG_INFO("Initialized sandbox successfully!");
 	}
 
 	void OnUpdate() override

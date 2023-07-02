@@ -113,7 +113,7 @@
       <PreprocessorDefinitions>DE_DEBUG;SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)DunnEngine\Vendor\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DunnEngine\Vendor\SFML\include;$(SolutionDir)DunnEngine\Vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,12 +154,14 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\EntryPoint.h" />
     <ClCompile Include="Source\Graphics\Window.cpp" />
+    <ClCompile Include="Source\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\DunnEngine.h" />
     <ClInclude Include="Source\Graphics\Window.h" />
+    <ClInclude Include="Source\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -113,7 +113,7 @@
       <PreprocessorDefinitions>DE_DEBUG;SFML_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)DunnEngine\Source;$(SolutionDir)DunnEngine\Vendor\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DunnEngine\Source;$(SolutionDir)DunnEngine\Vendor\SFML\include;$(SolutionDir)DunnEngine\Vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
