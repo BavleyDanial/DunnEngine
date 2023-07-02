@@ -1,14 +1,16 @@
 # DunnEngine
 A 2D game engine made for DunnGames
-It is designed to run at 60+ FPS and the scripting language is C++ 20
+It is designed to run at 60+ FPS and the scripting language is C++ 17
 
 # Installaion
 - Clone the git repository by typing this command in the terminal
 ```git clone --recursive https://github.com/BavleyDanial/TDE.git```
-- Then open the visual studio solution in the project folder (2022 is the only version that has been tested but it should work on visual studio versions 2019 and up).
-- If you have an older version of visual studio you may need to change the C++ version in the projects provided. Note that this might break any code using the newer C++ standard.
-- Make sure to set the DunnSandbox project to be the startup project, you can find this setting by right-clicking on the project.
-- You can change the DunnSandbox project name to the name of the game you are developing.
+- Then run the GenerateProjects.bat file, this will create a visual studio 2022 solution.
+- If you have an older version of visual studio you can edit the GenerateProjects.bat file to run vs(version name).<br/>
+  (2022 is the only version that has been tested but it should work on older visual studio versions and other IDEs).
+- If you have a different IDE that you want to use you can edit the GenerateProjects.bat to run a different IDE, more info on how to do so is here https://premake.github.io/docs/using-premake.<br/>
+  (2022 is the only version that has been tested but it should work on older visual studio versions and other IDEs).
+- You can change the DunnSandbox project name to the name of the game you are developing by editing the premake5.lua file and change all instances of DunnSandbox to your game's name.
 ### Now you can build and develop your games!
 
  # Documentation
