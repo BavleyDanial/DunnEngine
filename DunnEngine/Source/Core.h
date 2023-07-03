@@ -12,6 +12,6 @@
 #define DE_CORE_ASSERT(x, ...) { if(!(x)) { LOG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }	// engine assertion
 #define ASSERT(x, ...) { if(!(x)) { LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }			// Client assertion
 #else
-#define DE_ASSERT(X, ...)
+#define DE_CORE_ASSERT(X, ...)
 #define DE_ASSERT(x, ...)
 #endif
