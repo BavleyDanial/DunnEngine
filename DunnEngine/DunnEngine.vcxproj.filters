@@ -14,6 +14,9 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logger.h" />
+    <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\KeyCodes.h" />
+    <ClInclude Include="Source\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />

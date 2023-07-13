@@ -1,3 +1,5 @@
+#pragma once
+
 // Auther: Bavley Danial
 // Date: 7/11/2023
 //
@@ -22,44 +24,20 @@
 //
 
 
-#include <DunnEngine.h>
+/*
+	This file includes mouse codes that corespond to the mouse
+	codes found in SFML.
+	Probably better in the future to make an internal mouse codes conventions to
+	be able to make it cross compatible with other libraries.
+*/
 
-using namespace DunnEngine;
+// Mouse button definitions
+#define TDE_MOUSE_LEFT 0
+#define TDE_MOUSE_RIGHT 1
+#define TDE_MOUSE_MIDDLE 2    
+#define TDE_MOUSE_BUTTON1 3  
+#define TDE_MOUSE_BUTTON2 4
 
-class Sandbox : public DunnEngine::Application
-{
-public:
-	void OnInit() override
-	{
-		LOG_INFO("Initialized sandbox successfully!");
-	}
-
-	void OnUpdate() override
-	{
-		// move it to show test
-		//LOG_INFO("MouseX: {0}, MouseY: {1}", Input::GetMousePosition().first, Input::GetMousePosition().second);
-
-		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT))
-		{
-			LOG_INFO("Left mouse button pressed!");
-		}
-	}
-
-	void OnKeyEvent() override
-	{
-
-	}
-
-	void OnMouseEvent() override
-	{
-
-	}
-
-private:
-
-};
-
-DunnEngine::Application* DunnEngine::CreateApplication()
-{
-	return new Sandbox();
-}
+// Mouse wheel definitions
+#define TDE_MOUSE_VWHEEL 0
+#define TDE_MOUSE_HWHEEL 1

@@ -1,3 +1,5 @@
+#pragma once
+
 // Auther: Bavley Danial
 // Date: 7/11/2023
 //
@@ -22,44 +24,34 @@
 //
 
 
-#include <DunnEngine.h>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 
-using namespace DunnEngine;
+namespace DunnEngine {
 
-class Sandbox : public DunnEngine::Application
-{
-public:
-	void OnInit() override
+	class Input
 	{
-		LOG_INFO("Initialized sandbox successfully!");
-	}
-
-	void OnUpdate() override
-	{
-		// move it to show test
-		//LOG_INFO("MouseX: {0}, MouseY: {1}", Input::GetMousePosition().first, Input::GetMousePosition().second);
-
-		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT))
+	public:
+		static bool IsKeyPressed(int key)
 		{
-			LOG_INFO("Left mouse button pressed!");
+			return sf::Keyboard::isKeyPressed((sf::Keyboard::Scancode) key);
 		}
-	}
+		static bool IsMouseButtonPressed(int button)
+		{
+			return sf::Mouse::isButtonPressed((sf::Mouse::Button) button);
+		}
+		static std::pair<float, float> GetMousePosition()
+		{
+			return { (float)sf::Mouse::getPosition().x, (float)sf::Mouse::getPosition().y };
+		}
+		static void SetMousePoisiton(float x, float y)
+		{
+			sf::Mouse::setPosition(sf::Vector2i(x, y));
+		}
+		static void SetMousePoisiton(float x, float y, const sf::WindowBase& relativeWindow)
+		{
+			sf::Mouse::setPosition(sf::Vector2i(x, y), relativeWindow);
+		}
+	};
 
-	void OnKeyEvent() override
-	{
-
-	}
-
-	void OnMouseEvent() override
-	{
-
-	}
-
-private:
-
-};
-
-DunnEngine::Application* DunnEngine::CreateApplication()
-{
-	return new Sandbox();
 }
