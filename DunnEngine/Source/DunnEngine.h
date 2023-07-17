@@ -36,6 +36,7 @@
 #include "Input.h"
 #include "KeyCodes.h"
 #include "MouseButtonCodes.h"
+#include "ResourceManager.h"
 
 // Graphics:
 #include "Graphics/Window.h"

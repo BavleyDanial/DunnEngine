@@ -1,6 +1,7 @@
 workspace "TDE"
 	architecture "x64"
-	startproject "DunnSandbox"
+	projectName = "DunnSandbox"
+	startproject = "DunnSandbox"
 
 	configurations
 	{
@@ -18,6 +19,15 @@ project "DunnEngine"
 	objdir ("BinInt/" .. outputdir .. "/%{prj.name}")
 	defines "SFML_STATIC"
 
+	prebuildcommands
+	{
+		("{MKDIR} %{prj.location}../Bin/" .. outputdir .. "/DunnSandbox")	
+	}
+	postbuildcommands
+	{
+		("{COPYFILE} %{prj.location}Vendor/SFML/bin/openal32.dll \"../Bin/" ..outputdir.. "/DunnSandbox/\"")
+	}
+
 	files
 	{
 		"%{prj.name}/Source/**.h",
@@ -28,7 +38,8 @@ project "DunnEngine"
 	{
 		"%{prj.name}/Source",
 		"%{prj.name}/Vendor/spdlog/include",
-        "%{prj.name}/Vendor/SFML/include"
+        "%{prj.name}/Vendor/SFML/include",
+		"%{prj.name}/Vendor/glm/"
 	}
 
 	libdirs {"DunnEngine/Vendor/SFML/lib" }
@@ -50,6 +61,7 @@ project "DunnEngine"
 			"winmm.lib",
 			"gdi32.lib",
 			"sfml-audio-s-d.lib",
+			"openal32.lib",
 			"flac.lib",
 			"vorbisenc.lib",
 			"vorbisfile.lib",
@@ -71,6 +83,7 @@ project "DunnEngine"
 			"winmm.lib",
 			"gdi32.lib",
 			"sfml-audio-s.lib",
+			"openal32.lib",
 			"flac.lib",
 			"vorbisenc.lib",
 			"vorbisfile.lib",
@@ -94,9 +107,10 @@ project "DunnSandbox"
 	{
 		"DunnEngine/Vendor/spdlog/include",
         "DunnEngine/Vendor/SFML/include",
+		"DunnEngine/Vendor/glm",
 		"DunnEngine/Source"
 	}
-	libdirs { "SFML", "DunnEngine/Vendor/SFML/lib" }
+	libdirs {"DunnEngine/Vendor/SFML/lib" }
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -115,6 +129,7 @@ project "DunnSandbox"
 			"winmm.lib",
 			"gdi32.lib",
 			"sfml-audio-s-d.lib",
+			"openal32.lib",
 			"flac.lib",
 			"vorbisenc.lib",
 			"vorbisfile.lib",
@@ -136,6 +151,7 @@ project "DunnSandbox"
 			"winmm.lib",
 			"gdi32.lib",
 			"sfml-audio-s.lib",
+			"openal32.lib",
 			"flac.lib",
 			"vorbisenc.lib",
 			"vorbisfile.lib",

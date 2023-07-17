@@ -24,6 +24,8 @@
 #include "Application.h"
 
 #include <SFML/Graphics.hpp>
+#include <glm/glm.hpp>
+#include "ResourceManager.h"
 #include "Logger.h"
 #include "Input.h"
 #include "KeyCodes.h"
@@ -57,6 +59,34 @@ namespace DunnEngine {
         shape.setOrigin(shape.getRadius(), shape.getRadius());
         shape.setFillColor(sf::Color::Green);
 
+        //--Testing multiple files loading and sorting--//
+        ResourceManager::LoadTexture("TextureTest", "Resources/TestTexture.png");
+        // ResourceManager::LoadTexture("ATest", "Resources/TestTexture.png");
+        // ResourceManager::LoadTexture("ZTest", "Resources/TestTexture.png");
+        // ResourceManager::LoadTexture("FTest", "Resources/TestTexture.png");
+        // ResourceManager::LoadTexture("ATest2", "Resources/TestTexture.png");
+        // 
+        ResourceManager::LoadAudio("AudioTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("BAudioTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("WAudioTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("FAudioTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("DAudioTest", "Resources/TestAudio.wav");
+        // 
+        // ResourceManager::LoadAudio("FontTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("BFontTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("WFontTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("FFontTest", "Resources/TestAudio.wav");
+        // ResourceManager::LoadAudio("DFontTest", "Resources/TestAudio.wav");
+
+        //--Sfml testing stuff--//
+        sf::Texture texture;
+        sf::Sprite sprite;
+        sf::Sound sound;
+        sound.setBuffer(ResourceManager::GetSound("AudioTest"));
+        sprite.setTexture(ResourceManager::GetTexture("TextureTest"));
+        //texture.loadFromFile("Resources/Test.png");
+        sprite.setPosition(m_Window->GetSFMLWindow()->getSize().x / 2, m_Window->GetSFMLWindow()->getSize().y / 2);
+
         while (m_IsRunning)
         {
             sf::Event event;
@@ -67,6 +97,9 @@ namespace DunnEngine {
                     m_Window->GetSFMLWindow()->close();
                     m_IsRunning = false;
                 }
+
+                if (Input::IsKeyPressed(TDE_KEY_F))
+                    sound.play();
 
                 if (event.type == sf::Event::Resized)
                 {
@@ -81,7 +114,11 @@ namespace DunnEngine {
             OnUpdate();
 
             m_Window->ClearWindow();
-            m_Window->GetSFMLWindow()->draw(shape);
+
+            //--Test using SFML draw commands--//
+            //m_Window->GetSFMLWindow()->draw(sprite);
+            //m_Window->GetSFMLWindow()->draw(shape);
+
             m_Window->UpdateWindow();
         }
 	}

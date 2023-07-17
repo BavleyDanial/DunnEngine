@@ -26,6 +26,8 @@
 
 // Some core functionalities
 
+#include "Logger.h"
+
 #ifdef DE_DEBUG
 #define DE_ENABLE_ASSERT
 #endif

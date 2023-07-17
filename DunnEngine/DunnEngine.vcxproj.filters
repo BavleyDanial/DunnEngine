@@ -13,10 +13,11 @@
     <ClInclude Include="Source\Graphics\Window.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logger.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\KeyCodes.h" />
+    <ClInclude Include="Source\Logger.h" />
     <ClInclude Include="Source\MouseButtonCodes.h" />
+    <ClInclude Include="Source\ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
@@ -24,5 +25,6 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logger.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
   </ItemGroup>
 </Project>
