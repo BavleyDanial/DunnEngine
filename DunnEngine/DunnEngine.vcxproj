@@ -73,10 +73,10 @@
       <AdditionalLibraryDirectories>Vendor\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>IF NOT EXIST $(ProjectDir)..\Bin\Debug-windows-x86_64\DunnSandbox (mkdir $(ProjectDir)..\Bin\Debug-windows-x86_64\DunnSandbox)</Command>
+      <Command>IF NOT EXIST ..\Bin\Debug-windows-x86_64\DunnSandbox (mkdir ..\Bin\Debug-windows-x86_64\DunnSandbox)</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /B /Y $(ProjectDir)Vendor\SFML\bin\openal32.dll "..\Bin\Debug-windows-x86_64\DunnSandbox\"</Command>
+      <Command>copy /B /Y $(ProjectDir)Vendor\SFML\sfml-bin\openal32.dll "..\Bin\Debug-windows-x86_64\DunnSandbox\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,10 +104,10 @@
       <AdditionalLibraryDirectories>Vendor\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>IF NOT EXIST $(ProjectDir)..\Bin\Release-windows-x86_64\DunnSandbox (mkdir $(ProjectDir)..\Bin\Release-windows-x86_64\DunnSandbox)</Command>
+      <Command>IF NOT EXIST ..\Bin\Release-windows-x86_64\DunnSandbox (mkdir ..\Bin\Release-windows-x86_64\DunnSandbox)</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy /B /Y $(ProjectDir)Vendor\SFML\bin\openal32.dll "..\Bin\Release-windows-x86_64\DunnSandbox\"</Command>
+      <Command>copy /B /Y $(ProjectDir)Vendor\SFML\sfml-bin\openal32.dll "..\Bin\Release-windows-x86_64\DunnSandbox\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

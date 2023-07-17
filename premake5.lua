@@ -20,11 +20,12 @@ project "DunnEngine"
 
 	prebuildcommands
 	{
-		("{MKDIR} %{prj.location}../Bin/" .. outputdir .. "/DunnSandbox")	
+		("{MKDIR} ../Bin/" .. outputdir .. "/DunnSandbox/")
+		--"os.mkdir('%{wks.location}Bin\\" .. outputdir .. "\\DunnSandbox\"')"
 	}
 	postbuildcommands
 	{
-		("{COPYFILE} %{prj.location}Vendor/SFML/bin/openal32.dll \"../Bin/" ..outputdir.. "/DunnSandbox/\"")
+		("{COPYFILE} %{prj.location}Vendor/SFML/sfml-bin/openal32.dll \"../Bin/" ..outputdir.. "/DunnSandbox/\"")
 	}
 
 	files
