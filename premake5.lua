@@ -1,7 +1,6 @@
 workspace "TDE"
 	architecture "x64"
-	projectName = "DunnSandbox"
-	startproject = "DunnSandbox"
+	startproject "DunnSandbox"
 
 	configurations
 	{
