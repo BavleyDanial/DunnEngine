@@ -5,9 +5,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -36,7 +33,7 @@
 // problomatic line and displaying the specified message given to it. If it is not enabled THE ENTIRE LINE WITH THE ARGUMENT GIVEN TO IT WILL BE DELETED
 #ifdef  DE_ENABLE_ASSERT
 #define DE_CORE_ASSERT(x, ...) { if(!(x)) { LOG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }	// engine assertion
-#define ASSERT(x, ...) { if(!(x)) { LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }			// Client assertion
+#define DE_ASSERT(x, ...) { if(!(x)) { LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }			// Client assertion
 #else
 #define DE_CORE_ASSERT(X, ...)
 #define DE_ASSERT(x, ...)

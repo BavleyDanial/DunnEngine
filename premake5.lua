@@ -25,7 +25,7 @@ project "DunnEngine"
 	}
 	postbuildcommands
 	{
-		("{COPYFILE} %{prj.location}Vendor/SFML/sfml-bin/openal32.dll \"../Bin/" ..outputdir.. "/DunnSandbox/\"")
+		("{COPYFILE} %{prj.location}Vendor/SFML/sfml-bin/openal32.dll \"%{wks.location}Bin/" ..outputdir.. "/DunnSandbox/\"")
 	}
 
 	files

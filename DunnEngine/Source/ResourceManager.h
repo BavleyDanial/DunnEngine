@@ -5,9 +5,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -43,18 +40,21 @@ namespace DunnEngine {
 	{
 		std::string Name = "";  // The name of the texture
 		std::string Path = "";	// The path where the texture exists. This is reserved for debugging.
+		int index = 0;
 		sf::Texture Texture;	// The actual sfml texture
 	};
 	struct DE_Sound // Holds the definition of a sound
 	{
 		std::string Name = "";  // The name of the font
 		std::string Path = "";	// The path where the font exists. This is reserved for debugging.
+		int index = 0;
 		sf::SoundBuffer Sound;	// The actual sfml font
 	};
 	struct DE_Font // Holds the definition of a font
 	{
 		std::string Name = "";  // The name of the texture
 		std::string Path = "";  // The path where the texture exists. This is reserved for debugging.
+		int index = 0;
 		sf::Font Font;			// The actual sfml texture
 	};
 
@@ -65,14 +65,22 @@ namespace DunnEngine {
 		// They load them into their right buffers and sorts them.
 		static void LoadTexture(const std::string& name, const std::string& path);
 		static void LoadFont(const std::string& name, const std::string& path);
-		static void LoadAudio(const std::string& name, const std::string& path);
+		static void LoadSound(const std::string& name, const std::string& path);
 		
 		// These set of functions are used to retrieve the textures, fonts, audio and potentially other stuff that were loaded in memory previously.
 		// They retrieve them by searching in the buffers using Binary search. This is used because it is faster than Linear search especially 
 		// when there are hundreds of resources that are loaded in memory.
-		static sf::Texture& GetTexture(const std::string& name, std::vector<DE_Texture*>& buffer = m_TextureBuffer);
-		static sf::Font& GetFont(const std::string& name, std::vector<DE_Font*>& buffer = m_FontBuffer);
-		static sf::SoundBuffer& GetSound(const std::string& name, std::vector<DE_Sound*>& buffer = m_SoundBuffer);
+		static DE_Texture* GetTexture(const std::string& name, std::vector<DE_Texture*>& buffer = m_TextureBuffer);
+		static DE_Font* GetFont(const std::string& name, std::vector<DE_Font*>& buffer = m_FontBuffer);
+		static DE_Sound* GetSound(const std::string& name, std::vector<DE_Sound*>& buffer = m_SoundBuffer);
+
+		// These set of functions are used to delete specific textures, sounds, fonts, and potentially other stuff that were loaded in memory previously.
+		// 
+		static void DeleteTexture(const std::string& name);
+		static void DeleteFont(const std::string& name);
+		static void DeleteSound(const std::string& name);
+	public:
+		static void DeleteAllResources();
 	private:
 		// This function sorts the buffers using QuickSort. This is done because it is faster than other methods like selection sort especially
 		// especially when there are hundreds of resources that are loaded in memory.

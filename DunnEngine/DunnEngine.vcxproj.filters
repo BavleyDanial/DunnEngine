@@ -10,21 +10,17 @@
     <ClInclude Include="Source\Core.h" />
     <ClInclude Include="Source\DunnEngine.h" />
     <ClInclude Include="Source\EntryPoint.h" />
-    <ClInclude Include="Source\Graphics\Window.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\KeyCodes.h" />
     <ClInclude Include="Source\Logger.h" />
     <ClInclude Include="Source\MouseButtonCodes.h" />
     <ClInclude Include="Source\ResourceManager.h" />
+    <ClInclude Include="Source\Graphics\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\Graphics\Window.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Logger.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\Graphics\Window.cpp" />
   </ItemGroup>
 </Project>

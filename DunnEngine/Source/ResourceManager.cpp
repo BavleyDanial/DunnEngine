@@ -3,9 +3,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -29,7 +26,6 @@ namespace DunnEngine {
 	std::vector<DE_Sound*> ResourceManager::m_SoundBuffer;
 	std::vector<DE_Font*> ResourceManager::m_FontBuffer;
 
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
 	void ResourceManager::LoadTexture(const std::string& name, const std::string& path)
 	{
 		DE_Texture* texture = new DE_Texture;
@@ -42,7 +38,6 @@ namespace DunnEngine {
 		SortBuffer(Buffers::TextureBuffer, 0, m_TextureBuffer.size() - 1); // Sort the buffer supplying its type and first and last indicies
 	}
 
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
 	void ResourceManager::LoadFont(const std::string& name, const std::string& path)
 	{
 		DE_Font* font = new DE_Font;
@@ -55,8 +50,7 @@ namespace DunnEngine {
 		SortBuffer(Buffers::FontBuffer, 0, m_FontBuffer.size() - 1); // Sort the buffer supplying its type and first and last indicies
 	}
 
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
-	void ResourceManager::LoadAudio(const std::string& name, const std::string& path)
+	void ResourceManager::LoadSound(const std::string& name, const std::string& path)
 	{
 		DE_Sound* sound = new DE_Sound;
 		sound->Name = name;
@@ -68,7 +62,6 @@ namespace DunnEngine {
 		SortBuffer(Buffers::SoundBuffer, 0, m_SoundBuffer.size() - 1); // Sort the buffer supplying its type and first and last indicies
 	}
 
-	/* Will be better to implement it as a templated function instead of making checks for what buffer to sort everytime it is called */
 	void ResourceManager::SortBuffer(Buffers bufferType, int leftIndex, int rightIndex)
 	{
 		switch (bufferType)
@@ -95,6 +88,12 @@ namespace DunnEngine {
 
 				SortBuffer(Buffers::TextureBuffer, leftIndex, lowIndex - 1);  // Sort lower part
 				SortBuffer(Buffers::TextureBuffer, lowIndex + 1, rightIndex); // Sort higher part
+
+				// Update the buffer elements with the new indicies representing their new slots in the buffer.
+				if (lowIndex >= 0 && lowIndex < m_TextureBuffer.size())
+					m_TextureBuffer[lowIndex]->index = lowIndex;
+				if (rightIndex >= 0 && rightIndex < m_TextureBuffer.size())
+					m_TextureBuffer[rightIndex]->index = rightIndex;
 			}
 			break;
 		}
@@ -120,6 +119,12 @@ namespace DunnEngine {
 
 				SortBuffer(Buffers::SoundBuffer, leftIndex, lowIndex - 1);  // Sort lower part
 				SortBuffer(Buffers::SoundBuffer, lowIndex + 1, rightIndex); // Sort higher part
+
+				// Update the buffer elements with the new indicies representing their new slots in the buffer.
+				if (lowIndex >= 0 && lowIndex < m_SoundBuffer.size())
+					m_TextureBuffer[lowIndex]->index = lowIndex;
+				if (rightIndex >= 0 && rightIndex < m_SoundBuffer.size())
+					m_TextureBuffer[rightIndex]->index = rightIndex;
 			}
 			break;
 		}
@@ -145,6 +150,12 @@ namespace DunnEngine {
 
 				SortBuffer(Buffers::FontBuffer, leftIndex, lowIndex - 1);  // Sort lower part
 				SortBuffer(Buffers::FontBuffer, lowIndex + 1, rightIndex); // Sort higher part
+
+				// Update the buffer elements with the new indicies representing their new slots in the buffer.
+				if (lowIndex >= 0 && lowIndex < m_SoundBuffer.size())
+					m_TextureBuffer[lowIndex]->index = lowIndex;
+				if (rightIndex >= 0 && rightIndex < m_SoundBuffer.size())
+					m_TextureBuffer[rightIndex]->index = rightIndex;
 			}
 			break;
 		}
@@ -153,73 +164,151 @@ namespace DunnEngine {
 		}
 	}
 
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
-	sf::Texture& ResourceManager::GetTexture(const std::string& name, std::vector<DE_Texture*>& buffer)
+	DE_Texture* ResourceManager::GetTexture(const std::string& name, std::vector<DE_Texture*>& buffer)
 	{
 		int mid = buffer.size() / 2;
 
-		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error.
+		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error and return null.
 		if (buffer.size() == 1)
 		{
 			if (buffer[0]->Name == name)
-				return buffer[0]->Texture;
+			{
+				return buffer[0];
+			}
 			else
-				LOG_CORE_ERROR("Texture not found!");
+			{
+				LOG_CORE_ERROR("Texture with name \"{0}\" not found!", name);
+				return nullptr;
+			}
 		}
 
 		// If the buffer is the middle term then return that.
 		// If not then check if it is lower or higher than the needed element and check the lower or higher region respectively.
 		if (buffer[mid]->Name == name)
-			return buffer[mid]->Texture;
+			return buffer[mid];
 		else if (buffer[mid]->Name[0] < name[0])
 			return GetTexture(name, std::vector(buffer.begin() + mid, buffer.end()));
 		else
 			return GetTexture(name, std::vector(buffer.begin(), buffer.end() - mid));
 	}
 
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
-	sf::Font& ResourceManager::GetFont(const std::string& name, std::vector<DE_Font*>& buffer)
+	DE_Font* ResourceManager::GetFont(const std::string& name, std::vector<DE_Font*>& buffer)
 	{
 		int mid = buffer.size() / 2;
 
-		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error.
+		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error and return null.
 		if (buffer.size() == 1)
 		{
 			if (buffer[0]->Name == name)
-				return buffer[0]->Font;
+			{
+				return buffer[0];
+			}
 			else
-				LOG_CORE_ERROR("Font not found!");
+			{
+				LOG_CORE_ERROR("Font with name \"{0}\" not found!", name);
+				return nullptr;
+			}
 		}
 
-		// If the buffer is the middle term then return that. If not then check if it is lower or higher than the needed element and check the lower or higher region respectively.
+		// If the buffer is the middle term then return that.
+		// If not then check if it is lower or higher than the needed element and check the lower or higher region respectively.
 		if (buffer[mid]->Name == name)
-			return buffer[mid]->Font;
+			return buffer[mid];
 		else if (buffer[mid]->Name[0] < name[0])
 			return GetFont(name, std::vector(buffer.begin() + mid, buffer.end()));
 		else
 			return GetFont(name, std::vector(buffer.begin(), buffer.end() - mid));
 	}
-	/* Will be better to implement it as a templated function instead of making multiple versions of it with different resources */
-	sf::SoundBuffer& ResourceManager::GetSound(const std::string& name, std::vector<DE_Sound*>& buffer)
+
+	DE_Sound* ResourceManager::GetSound(const std::string& name, std::vector<DE_Sound*>& buffer)
 	{
 		int mid = buffer.size() / 2;
 
-		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error.
+		// If there is only one element in the buffer check if it is the one we need and if so return it. Else log an error and return null.
 		if (buffer.size() == 1)
 		{
 			if (buffer[0]->Name == name)
-				return buffer[0]->Sound;
+			{
+				return buffer[0];
+			}
 			else
-				LOG_CORE_ERROR("Sound not found!");
+			{
+				LOG_CORE_ERROR("Sound with name \"{0}\" not found!", name);
+				return nullptr;
+			}
 		}
 
-		// If the buffer is the middle term then return that. If not then check if it is lower or higher than the needed element and check the lower or higher region respectively.
+		// If the buffer is the middle term then return that.
+		// If not then check if it is lower or higher than the needed element and check the lower or higher region respectively.
 		if (buffer[mid]->Name == name)
-			return buffer[mid]->Sound;
+			return buffer[mid];
 		else if (buffer[mid]->Name[0] < name[0])
 			return GetSound(name, std::vector(buffer.begin() + mid, buffer.end()));
 		else
 			return GetSound(name, std::vector(buffer.begin(), buffer.end() - mid));
+	}
+
+	void ResourceManager::DeleteTexture(const std::string& name)
+	{					
+		DE_Texture* texture = GetTexture(name);
+		if (!texture) // If texture not found return
+		{
+			LOG_CORE_ERROR("Texture with name \"{0}\" not found!", name);
+			return;
+		}
+		m_TextureBuffer.erase(m_TextureBuffer.begin() + texture->index);
+		delete texture;
+	}					
+	void ResourceManager::DeleteFont(const std::string& name)
+	{					
+		DE_Font* font = GetFont(name);
+		if (!font) // If texture not found return
+		{
+			LOG_CORE_ERROR("Font with name \"{0}\" not found!", name);
+			return;
+		}
+		m_FontBuffer.erase(m_FontBuffer.begin() + font->index);
+		delete font;
+	}					
+	void ResourceManager::DeleteSound(const std::string& name)
+	{					
+		DE_Sound* sound = GetSound(name);
+		if (!sound) // If texture not found return
+		{
+			LOG_CORE_ERROR("Sound with name \"{0}\" not found!", name);
+			return;
+		}
+		m_SoundBuffer.erase(m_SoundBuffer.begin() + sound->index);
+		delete sound;
+	}					
+	void ResourceManager::DeleteAllResources()
+	{
+		// Loops through every texture in the texture buffer.
+		for (int i = 0; i < m_TextureBuffer.size(); i++)
+		{
+			DE_Texture* texture = m_TextureBuffer[0];							// Get first texture in the buffer so that it can be deleted seperatly and not be lost.
+			SortBuffer(Buffers::TextureBuffer, 0, m_TextureBuffer.size() - 1);  // Sort the buffer because buffer.erase() will change the order every iteration.
+			m_TextureBuffer.erase(m_TextureBuffer.begin());
+			delete texture;
+		}
+
+		// Loops through every sound in the sound buffer.
+		for (int i = 0; i < m_SoundBuffer.size(); i++)
+		{
+			DE_Sound* sound = m_SoundBuffer[0];									// Get first sound in the buffer so that it can be deleted seperatly and not be lost.
+			SortBuffer(Buffers::SoundBuffer, 0, m_SoundBuffer.size() - 1);		// Sort the buffer because buffer.erase() will change the order every iteration.
+			m_SoundBuffer.erase(m_SoundBuffer.begin());
+			delete sound;
+		}
+
+		// Loops through every font in the font buffer.
+		for (int i = 0; i < m_FontBuffer.size(); i++)
+		{
+			DE_Font* font = m_FontBuffer[0];									// Get first font in the buffer so that it can be deleted seperatly and not be lost.
+			SortBuffer(Buffers::FontBuffer, 0, m_FontBuffer.size() - 1);		// Sort the buffer because buffer.erase() will change the order every iteration.
+			m_FontBuffer.erase(m_FontBuffer.begin());
+			delete font;
+		}
 	}
 
 }

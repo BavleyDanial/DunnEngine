@@ -3,9 +3,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -25,7 +22,10 @@
 
 namespace DunnEngine {
 
-	Window::Window(const std::string& title, uint32_t width, uint32_t height, bool fullScreen, bool vSync)
+	WindowProps Window::m_WindowProps;
+	std::shared_ptr<sf::RenderWindow> Window::m_Window = nullptr;
+
+	void Window::Create(const std::string& title, uint32_t width, uint32_t height, bool fullScreen, bool vSync)
 	{
 		m_WindowProps.Title = title;
 		m_WindowProps.Width = width;
@@ -33,12 +33,12 @@ namespace DunnEngine {
 		m_WindowProps.IsFullScreen = fullScreen;
 		m_WindowProps.IsVSync = vSync;
 
-		m_Window = std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), title); // create the window with the specified width, height, and title
+		m_Window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title); // create the window with the specified width, height, and title
 		SetVSync(vSync);
 		SetFullScreen(fullScreen);
 	}
 
-	Window::~Window()
+	void Window::Shutdown()
 	{
 		m_Window->close();
 	}
@@ -53,7 +53,7 @@ namespace DunnEngine {
 
 		m_WindowProps.IsVSync = enabled;
 	}
-	bool Window::IsVSync() const
+	bool Window::IsVSync()
 	{
 		return m_WindowProps.IsVSync;
 	}
@@ -73,16 +73,16 @@ namespace DunnEngine {
 		return m_WindowProps.IsFullScreen;
 	}
 
-	void Window::ClearWindow() const
+	void Window::ClearWindow()
 	{
 		m_Window->clear();
 	}
 
-	void Window::UpdateWindow() const
+	void Window::UpdateWindow()
 	{
 		m_Window->display();
 	}
-	bool Window::PollEvents(sf::Event& event) const
+	bool Window::PollEvents(sf::Event& event)
 	{
 		return m_Window->pollEvent(event);
 	}

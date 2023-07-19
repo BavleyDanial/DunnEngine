@@ -5,9 +5,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -25,7 +22,6 @@
 
 
 #include <memory>
-#include "Graphics/Window.h"
 
 namespace DunnEngine {
 
@@ -45,7 +41,6 @@ namespace DunnEngine {
 		virtual void OnKeyEvent() = 0;
 		virtual void OnMouseEvent() = 0;
 	private:
-		std::shared_ptr<Window> m_Window; // Stores a pointer to the window
 		bool m_IsRunning = true;          // Keeping track if the application is still running
 
 	private:

@@ -3,9 +3,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -24,6 +21,7 @@
 #include "Application.h"
 
 #include <SFML/Graphics.hpp>
+#include <Graphics/Window.h>
 #include <glm/glm.hpp>
 #include "ResourceManager.h"
 #include "Logger.h"
@@ -42,13 +40,14 @@ namespace DunnEngine {
         Logger::Init();
         DE_CORE_ASSERT(!s_Instance, "Application already exists!");
         LOG_CORE_INFO("DunnEngine instanstiated!");
+
         s_Instance = this;
-        m_Window = std::make_shared<Window>("Hello", (uint32_t)1280, (uint32_t)720);
 	}
 
 	Application::~Application()
 	{
-
+        ResourceManager::DeleteAllResources();
+        Window::Shutdown();
 	}
 
 	void Application::Run()
@@ -60,13 +59,13 @@ namespace DunnEngine {
         shape.setFillColor(sf::Color::Green);
 
         //--Testing multiple files loading and sorting--//
-        ResourceManager::LoadTexture("TextureTest", "Resources/TestTexture.png");
+        // ResourceManager::LoadTexture("TextureTest", "Resources/TestTexture.png");
         // ResourceManager::LoadTexture("ATest", "Resources/TestTexture.png");
         // ResourceManager::LoadTexture("ZTest", "Resources/TestTexture.png");
         // ResourceManager::LoadTexture("FTest", "Resources/TestTexture.png");
         // ResourceManager::LoadTexture("ATest2", "Resources/TestTexture.png");
         // 
-        ResourceManager::LoadAudio("AudioTest", "Resources/TestAudio.wav");
+        //ResourceManager::LoadSound("AudioTest", "Resources/TestAudio.wav");
         // ResourceManager::LoadAudio("BAudioTest", "Resources/TestAudio.wav");
         // ResourceManager::LoadAudio("WAudioTest", "Resources/TestAudio.wav");
         // ResourceManager::LoadAudio("FAudioTest", "Resources/TestAudio.wav");
@@ -79,47 +78,46 @@ namespace DunnEngine {
         // ResourceManager::LoadAudio("DFontTest", "Resources/TestAudio.wav");
 
         //--Sfml testing stuff--//
-        sf::Texture texture;
-        sf::Sprite sprite;
-        sf::Sound sound;
-        sound.setBuffer(ResourceManager::GetSound("AudioTest"));
-        sprite.setTexture(ResourceManager::GetTexture("TextureTest"));
+        // sf::Texture texture;
+        // sf::Sprite sprite;
+        // sf::Sound sound;
+        // sound.setBuffer(ResourceManager::GetSound("AudioTest")->Sound);
+        // sprite.setTexture(ResourceManager::GetTexture("TextureTest")->Texture);
         //texture.loadFromFile("Resources/Test.png");
-        sprite.setPosition(m_Window->GetSFMLWindow()->getSize().x / 2, m_Window->GetSFMLWindow()->getSize().y / 2);
+       // sprite.setPosition(Window::GetWidth()/ 2, Window::GetHeight() / 2);
 
         while (m_IsRunning)
         {
             sf::Event event;
-            while (m_Window->PollEvents(event))
+            while (Window::PollEvents(event))
             {
                 if (event.type == sf::Event::Closed)
                 {
-                    m_Window->GetSFMLWindow()->close();
+                    Window::GetSFMLWindow()->close();
                     m_IsRunning = false;
                 }
 
-                if (Input::IsKeyPressed(TDE_KEY_F))
-                    sound.play();
+                // if (Input::IsKeyPressed(TDE_KEY_F))
+                //     sound.play();
 
                 if (event.type == sf::Event::Resized)
                 {
                     // update the view to the new size of the window
                     sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                    m_Window->GetSFMLWindow()->setView(sf::View(visibleArea));
+                    Window::GetSFMLWindow()->setView(sf::View(visibleArea));
                 }
-                shape.setPosition(m_Window->GetSFMLWindow()->getSize().x / 2, m_Window->GetSFMLWindow()->getSize().y / 2);
+                //shape.setPosition(Window::GetWidth() / 2, Window::GetHeight() / 2);
 
             }
 
+            Window::ClearWindow();
             OnUpdate();
-
-            m_Window->ClearWindow();
+            Window::UpdateWindow();
 
             //--Test using SFML draw commands--//
             //m_Window->GetSFMLWindow()->draw(sprite);
             //m_Window->GetSFMLWindow()->draw(shape);
 
-            m_Window->UpdateWindow();
         }
 	}
 

@@ -5,9 +5,6 @@
 //
 // TDE - The Dunn Engine
 //
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
 // Permission is granted to DunnGames to use this software for any purpose,
 // including commercial applications, and to alter it and redistribute it freely,
 // subject to the following restrictions:
@@ -27,6 +24,14 @@
 
 namespace DunnEngine {
 
+	struct WindowProps
+	{
+		std::string Title = "";
+		uint32_t Width = 0, Height = 0;
+		bool IsFullScreen = false;
+		bool IsVSync = true;
+	};
+
 	/*
 		The window class is responsible for managing the window of the game.
 		The features that this window includes:
@@ -38,50 +43,43 @@ namespace DunnEngine {
 	class Window
 	{
 	public:
-		// Constructs the window with the provided data
-		Window(const std::string& title, uint32_t width, uint32_t height, bool fullScreen = false, bool vSync = true);
+		// Creates the window with the provided data
+		static void Create(const std::string& title, uint32_t width, uint32_t height, bool fullScreen = false, bool vSync = true);
 		// Destroys the window
-		~Window();
+		static void Shutdown();
 
-		const std::shared_ptr<sf::RenderWindow> GetSFMLWindow() { return m_Window; } // returns the sfml window for any needs that are not written in this class
+		// returns the sfml window for any needs that are not written in this class
+		static const std::shared_ptr<sf::RenderWindow> GetSFMLWindow() { return m_Window; }
 
 		//--------------------------------- CLIENT SIDE FUNCTOINS ---------------------------------\\
 
-		const uint32_t GetWidth() const { return m_WindowProps.Width; }
-		const uint32_t GetHeight() const { return m_WindowProps.Height; }
+		static const uint32_t GetWidth() { return m_WindowProps.Width; }
+		static const uint32_t GetHeight() { return m_WindowProps.Height; }
 		
 		// Sets vsync on or off. This function can be called in any function in the client game
-		void SetVSync(bool enabled);
+		static void SetVSync(bool enabled);
 		// returns if vsync is on or off. This function can be called in any function in the client game
-		bool IsVSync() const;
+		static bool IsVSync();
 
 		// Sets fullscreen on or off. This function can be called in any function in the client game Could be improved by not only fullscreening
 		// to one mode and instead fullscreening with a different resolution if the client has provided that
-		void SetFullScreen(bool enabled);
+		static void SetFullScreen(bool enabled);
 		// returns if fullscreen is on or off. This function can be called in any function in the client game
-		bool IsFullScreen();
+		static bool IsFullScreen();
 
 
 		//--------------------------------- ENGINE SIDE FUNCTOINS ---------------------------------\\
 
 		// Clears the window of the old frame so that the new frame can be drawn on it. This function must ONLY be called in the engine side
-		void ClearWindow() const;
+		static void ClearWindow();
 		// Updates the window by changing the old frame to the new frame. This function must ONLY be called in the engine side
-		void UpdateWindow() const;
+		static void UpdateWindow();
 		// Polls the events happening in the window. This function must ONLY be called in the engine side
-		bool PollEvents(sf::Event& event) const;
+		static bool PollEvents(sf::Event& event);
 
 	private:
-		// Windows Properities
-		struct WindowProps
-		{
-			std::string Title;
-			uint32_t Width, Height;
-			bool IsFullScreen;
-			bool IsVSync;
-		};
-		WindowProps m_WindowProps;				     // Holds the window's properties
-		std::shared_ptr<sf::RenderWindow> m_Window;  // Holds the pointer to the sfml window
+		static WindowProps m_WindowProps;				     // Holds the window's properties
+		static std::shared_ptr<sf::RenderWindow> m_Window;  // Holds the pointer to the sfml window
 	};
 
 }

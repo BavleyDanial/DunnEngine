@@ -6,3 +6,4 @@ BinInt/
 # Files
 *.user
 *.sln
+*.vcxproj
