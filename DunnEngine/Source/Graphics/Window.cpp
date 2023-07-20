@@ -43,6 +43,21 @@ namespace DunnEngine {
 		m_Window->close();
 	}
 
+	void Window::SetWidth(uint32_t width)
+	{
+		Resize(width, m_WindowProps.Height);
+	}
+	void Window::SetHeight(uint32_t height)
+	{
+		Resize(height, m_WindowProps.Height);
+	}
+	void Window::Resize(uint32_t width, uint32_t height)
+	{
+		m_WindowProps.Width = width;
+		m_WindowProps.Height = height;
+		sf::FloatRect viewPort = sf::FloatRect(0, 0, width, height);
+		m_Window->setView(sf::View(viewPort));
+	}
 	
 	void Window::SetVSync(bool enabled)
 	{

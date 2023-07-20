@@ -42,7 +42,6 @@ namespace DunnEngine {
 		virtual void OnMouseEvent() = 0;
 	private:
 		bool m_IsRunning = true;          // Keeping track if the application is still running
-
 	private:
 		static Application* s_Instance;   // Stores the ONLY instance of the application
 	};

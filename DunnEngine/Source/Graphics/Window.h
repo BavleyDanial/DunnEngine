@@ -53,8 +53,13 @@ namespace DunnEngine {
 
 		//--------------------------------- CLIENT SIDE FUNCTOINS ---------------------------------\\
 
+		static void SetWidth(uint32_t width);
+		static void SetHeight(uint32_t height);
+
 		static const uint32_t GetWidth() { return m_WindowProps.Width; }
 		static const uint32_t GetHeight() { return m_WindowProps.Height; }
+
+		static void Resize(uint32_t width, uint32_t height);
 		
 		// Sets vsync on or off. This function can be called in any function in the client game
 		static void SetVSync(bool enabled);

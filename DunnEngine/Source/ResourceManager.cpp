@@ -122,9 +122,9 @@ namespace DunnEngine {
 
 				// Update the buffer elements with the new indicies representing their new slots in the buffer.
 				if (lowIndex >= 0 && lowIndex < m_SoundBuffer.size())
-					m_TextureBuffer[lowIndex]->index = lowIndex;
+					m_SoundBuffer[lowIndex]->index = lowIndex;
 				if (rightIndex >= 0 && rightIndex < m_SoundBuffer.size())
-					m_TextureBuffer[rightIndex]->index = rightIndex;
+					m_SoundBuffer[rightIndex]->index = rightIndex;
 			}
 			break;
 		}
@@ -152,10 +152,10 @@ namespace DunnEngine {
 				SortBuffer(Buffers::FontBuffer, lowIndex + 1, rightIndex); // Sort higher part
 
 				// Update the buffer elements with the new indicies representing their new slots in the buffer.
-				if (lowIndex >= 0 && lowIndex < m_SoundBuffer.size())
-					m_TextureBuffer[lowIndex]->index = lowIndex;
-				if (rightIndex >= 0 && rightIndex < m_SoundBuffer.size())
-					m_TextureBuffer[rightIndex]->index = rightIndex;
+				if (lowIndex >= 0 && lowIndex < m_FontBuffer.size())
+					m_FontBuffer[lowIndex]->index = lowIndex;
+				if (rightIndex >= 0 && rightIndex < m_FontBuffer.size())
+					m_FontBuffer[rightIndex]->index = rightIndex;
 			}
 			break;
 		}

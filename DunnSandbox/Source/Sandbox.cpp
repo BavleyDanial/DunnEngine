@@ -2,30 +2,20 @@
 // Date: 7/11/2023
 //
 // TDE - The Dunn Engine
-//
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-
 
 #include <DunnEngine.h>
-#include <math.h>
 
 using namespace DunnEngine;
 
 class Sandbox : public DunnEngine::Application
 {
+public:
+	sf::Time soundTimer;
+	sf::Time clickTimer;
+	sf::Time dt;			// Delta time. Should be managed by engine in future versions
+	sf::Clock clock;		// Should be managed by engine in future versions
+	sf::Sound soundPlayer;	// Should be managed by engine in future versions. Will result in a warning for now due to lack of destruction
+	bool isDone = true;
 public:
 	void OnInit() override
 	{
@@ -85,12 +75,71 @@ public:
 		sf::Sprite sprite;
 		sprite.setTexture(texture->Texture);
 		sprite.setOrigin(texture->Texture.getSize().x / 2, texture->Texture.getSize().y / 2); // This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		sprite.setPosition(Window::GetWidth() / 2, Window::GetHeight() / 2);
+		sprite.setPosition(Window::GetWidth() / 2, Window::GetHeight() / 2); // The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
 		Window::GetSFMLWindow()->draw(sprite);
+
+		// Example for playing sound in this version
+		DE_Sound* sound = ResourceManager::GetSound("TestSound");
+		if (!soundPlayer.getBuffer())
+			soundPlayer.setBuffer(sound->Sound);
+
+		if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.asMilliseconds() <= 0)
+		{
+			soundPlayer.play();
+			soundTimer = soundPlayer.getBuffer()->getDuration() + sf::seconds(0.5); // Add delay that is equal to the length of the track + 0.5 seconds
+																					// The delay of the length of the track should be managed by the engine side
+		}
+		else
+		{
+			soundTimer -= dt;
+		}
+
+		// Example for logging something
+		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT) && clickTimer.asMilliseconds() <= 0)
+		{
+			clickTimer = sf::seconds(1);
+			LOG_INFO("Left Clicked!");
+		}
+		else
+		{
+			clickTimer -= dt;
+		}
+
+		// Example for displaying text on screen in this version
+		DE_Font* font = ResourceManager::GetFont("TestFont");
+		sf::Text text;
+		font->Font.setSmooth(false); // disable any smoothing algorithms for the crisp retro font
+		text.setFont(font->Font);
+		text.setCharacterSize(50);   // set font size
+		text.setString("Hello, world!");
+		text.setOrigin(text.getLocalBounds().getSize().x / 2, text.getLocalBounds().getSize().y / 2);
+		text.setPosition(Window::GetWidth() / 2, (Window::GetHeight() / 2) - (Window::GetHeight() / 3)); // set position to the upper middle position
+		Window::GetSFMLWindow()->draw(text);
+
+		dt = clock.restart(); // should be managed by engine
 
 		// Example for displaying sprites on screen in the future versions
 		// DE_Texture* texture = ResourceManager::GetTexture("TestTexture");
 		// Graphics::DrawSprite(texture, position, rotation, scale, color(optional), maybe other stuff that will be optional);
+		// 
+		// Example for playing sounds in the future versions
+		// DE_Sound* sound = ResourceManager::GetSound("TestSound");
+		// if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.asMilliseconds() <= 0) // soundTimer will be a DE::Time object
+		// {
+		// 	soundPlayer.play();
+		// 	soundTimer = Time::Seconds(0.5); // Add 0.5 seconds
+		// }
+		// else
+		// {
+		// 	soundTimer -= dt;
+		// }
+		//
+		// Example for displaying texts in the future versions
+		// DE_Font* font = ResourceManager::GetFont("TestFont");
+		// DE::Text text;
+		// text.SetFont(font, size);
+		// text.SetString("Hello, world!");
+		// Graphics::DrawText(text, position, rotation, scale, color,(optional), and maybe other stuff that will be optional);
 	}
 
 	void OnKeyEvent() override
@@ -102,9 +151,6 @@ public:
 	{
 
 	}
-
-private:
-
 };
 
 DunnEngine::Application* DunnEngine::CreateApplication()

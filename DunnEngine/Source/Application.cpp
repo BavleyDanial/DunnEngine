@@ -54,71 +54,55 @@ namespace DunnEngine {
 	{
 		OnInit();
 
-        sf::CircleShape shape(100.f);
-        shape.setOrigin(shape.getRadius(), shape.getRadius());
-        shape.setFillColor(sf::Color::Green);
-
-        //--Testing multiple files loading and sorting--//
-        // ResourceManager::LoadTexture("TextureTest", "Resources/TestTexture.png");
-        // ResourceManager::LoadTexture("ATest", "Resources/TestTexture.png");
-        // ResourceManager::LoadTexture("ZTest", "Resources/TestTexture.png");
-        // ResourceManager::LoadTexture("FTest", "Resources/TestTexture.png");
-        // ResourceManager::LoadTexture("ATest2", "Resources/TestTexture.png");
-        // 
-        //ResourceManager::LoadSound("AudioTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("BAudioTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("WAudioTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("FAudioTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("DAudioTest", "Resources/TestAudio.wav");
-        // 
-        // ResourceManager::LoadAudio("FontTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("BFontTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("WFontTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("FFontTest", "Resources/TestAudio.wav");
-        // ResourceManager::LoadAudio("DFontTest", "Resources/TestAudio.wav");
-
-        //--Sfml testing stuff--//
-        // sf::Texture texture;
-        // sf::Sprite sprite;
-        // sf::Sound sound;
-        // sound.setBuffer(ResourceManager::GetSound("AudioTest")->Sound);
-        // sprite.setTexture(ResourceManager::GetTexture("TextureTest")->Texture);
-        //texture.loadFromFile("Resources/Test.png");
-       // sprite.setPosition(Window::GetWidth()/ 2, Window::GetHeight() / 2);
-
         while (m_IsRunning)
         {
-            sf::Event event;
-            while (Window::PollEvents(event))
-            {
-                if (event.type == sf::Event::Closed)
-                {
-                    Window::GetSFMLWindow()->close();
-                    m_IsRunning = false;
-                }
-
-                // if (Input::IsKeyPressed(TDE_KEY_F))
-                //     sound.play();
-
-                if (event.type == sf::Event::Resized)
-                {
-                    // update the view to the new size of the window
-                    sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                    Window::GetSFMLWindow()->setView(sf::View(visibleArea));
-                }
-                //shape.setPosition(Window::GetWidth() / 2, Window::GetHeight() / 2);
-
-            }
+            OnEvent();
 
             Window::ClearWindow();
             OnUpdate();
             Window::UpdateWindow();
-
-            //--Test using SFML draw commands--//
-            //m_Window->GetSFMLWindow()->draw(sprite);
-            //m_Window->GetSFMLWindow()->draw(shape);
-
         }
 	}
+
+    void Application::OnEvent()
+    {
+        sf::Event event;
+        while (Window::PollEvents(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                Window::Shutdown();
+                m_IsRunning = false;
+            }
+
+            if (event.type == sf::Event::Resized)
+            {
+                // update the view to the new size of the window
+                Window::Resize(event.size.width, event.size.height);
+            }
+
+            if (event.type == sf::Event::EventType::TextEntered)
+                OnKeyEvent();
+            if (event.type == sf::Event::EventType::KeyPressed)
+                OnKeyEvent();
+            if (event.type == sf::Event::EventType::KeyReleased)
+                OnKeyEvent();
+
+            if (event.type == sf::Event::EventType::MouseMoved)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseButtonPressed)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseButtonReleased)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseWheelScrolled)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseWheelScrolled)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseEntered)
+                OnMouseEvent();
+            if (event.type == sf::Event::EventType::MouseLeft)
+                OnMouseEvent();
+        }
+    }
 
 }
