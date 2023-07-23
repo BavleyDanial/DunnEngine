@@ -10,12 +10,18 @@ using namespace DunnEngine;
 class Sandbox : public DunnEngine::Application
 {
 public:
-	sf::Time soundTimer;
-	sf::Time clickTimer;
-	sf::Time dt;			// Delta time. Should be managed by engine in future versions
-	sf::Clock clock;		// Should be managed by engine in future versions
 	sf::Sound soundPlayer;	// Should be managed by engine in future versions. Will result in a warning for now due to lack of destruction
-	bool isDone = true;
+
+	Time soundTimer;		// Used to show examples on using Time in this version
+	Time clickTimer;		// Used to show examples on using Time in this version
+
+	glm::vec2 spritePos;	// Used to show examples on drawing a Sprite in this version
+	float spriteRot;		// Used to show examples on drawing a Sprite in this version
+	glm::vec2 spriteScale;	// Used to show examples on drawing a Sprite in this version
+
+	glm::vec2 textPos;		// Used to show examples on drawing a Text in this version
+	float textRot;			// Used to show examples on drawing a Text in this version
+	glm::vec2 textScale;	// Used to show examples on drawing a Text in this version
 public:
 	void OnInit() override
 	{
@@ -63,6 +69,14 @@ public:
 			// ResourceManager::DeleteFont("TestFont");				// Deletes the font with this name. Will print an error when no font found.
 			// ResourceManager::DeleteAllResources();				// Deletes all resources.
 
+			spritePos = glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2);
+			spriteScale = glm::vec2(1);
+			spriteRot = 0;
+
+			textPos = glm::vec2(Window::GetWidth() / 2, (Window::GetHeight() / 2) - (Window::GetHeight() / 3));
+			textScale = glm::vec2(1);
+			textRot = 0;
+
 			// Math
 			// For now there is no built in math functions. You can use glm to use math. See the glm documentation here https://glm.g-truc.net/0.9.9/api/index.html
 		}
@@ -72,79 +86,62 @@ public:
 	{
 		// Example for displaying sprites on screen in this version
 		DE_Texture* texture = ResourceManager::GetTexture("TestTexture");
-		sf::Sprite sprite;
-		sprite.setTexture(texture->Texture);
-		sprite.setOrigin(texture->Texture.getSize().x / 2, texture->Texture.getSize().y / 2); // This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		sprite.setPosition(Window::GetWidth() / 2, Window::GetHeight() / 2); // The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
-		Window::GetSFMLWindow()->draw(sprite);
+		Graphics::DrawSprite(texture, spritePos, spriteRot, spriteScale);
+		if (Input::IsKeyPressed(TDE_KEY_W))
+			spritePos.y += 300 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_S))
+			spritePos.y -= 300 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_D))
+			spritePos.x += 300 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_A))
+			spritePos.x -= 300 * Time::GetDeltaTime().asSeconds();
+
+		if (Input::IsKeyPressed(TDE_KEY_E))
+			spriteRot += 10 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_Q))
+			spriteRot -= 10 * Time::GetDeltaTime().asSeconds();
+
+		// Example for displaying a text in this version
+		DE_Font* font = ResourceManager::GetFont("TestFont");
+		Text text;
+		text.SetFont(font, 50);
+		text.SetString("Hello, world!");
+		Graphics::Print(text, textPos, textRot, textScale);
 
 		// Example for playing sound in this version
 		DE_Sound* sound = ResourceManager::GetSound("TestSound");
 		if (!soundPlayer.getBuffer())
-			soundPlayer.setBuffer(sound->Sound);
-
-		if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.asMilliseconds() <= 0)
+			soundPlayer.setBuffer(*sound->Sound);
+		
+		if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.GetTime().asMilliseconds() <= 0)
 		{
 			soundPlayer.play();
-			soundTimer = soundPlayer.getBuffer()->getDuration() + sf::seconds(0.5); // Add delay that is equal to the length of the track + 0.5 seconds
-																					// The delay of the length of the track should be managed by the engine side
+			soundTimer = soundPlayer.getBuffer()->getDuration(); // Add delay that is equal to the length of the track. Should be managed by engine side
 		}
 		else
 		{
-			soundTimer -= dt;
+			soundTimer -= Time::GetDeltaTime();
 		}
 
 		// Example for logging something
-		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT) && clickTimer.asMilliseconds() <= 0)
+		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT) && clickTimer.GetTime().asMicroseconds() <= 0)
 		{
-			clickTimer = sf::seconds(1);
 			LOG_INFO("Left Clicked!");
+			clickTimer.SetTime(1);
 		}
 		else
 		{
-			clickTimer -= dt;
+			clickTimer -= Time::GetDeltaTime();
 		}
 
-		// Example for displaying text on screen in this version
-		DE_Font* font = ResourceManager::GetFont("TestFont");
-		sf::Text text;
-		font->Font.setSmooth(false); // disable any smoothing algorithms for the crisp retro font
-		text.setFont(font->Font);
-		text.setCharacterSize(50);   // set font size
-		text.setString("Hello, world!");
-		text.setOrigin(text.getLocalBounds().getSize().x / 2, text.getLocalBounds().getSize().y / 2);
-		text.setPosition(Window::GetWidth() / 2, (Window::GetHeight() / 2) - (Window::GetHeight() / 3)); // set position to the upper middle position
-		Window::GetSFMLWindow()->draw(text);
-
-		dt = clock.restart(); // should be managed by engine
-
-		// Example for displaying sprites on screen in the future versions
-		// DE_Texture* texture = ResourceManager::GetTexture("TestTexture");
-		// Graphics::DrawSprite(texture, position, rotation, scale, color(optional), maybe other stuff that will be optional);
-		// 
-		// Example for playing sounds in the future versions
-		// DE_Sound* sound = ResourceManager::GetSound("TestSound");
-		// if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.asMilliseconds() <= 0) // soundTimer will be a DE::Time object
-		// {
-		// 	soundPlayer.play();
-		// 	soundTimer = Time::Seconds(0.5); // Add 0.5 seconds
-		// }
-		// else
-		// {
-		// 	soundTimer -= dt;
-		// }
-		//
-		// Example for displaying texts in the future versions
-		// DE_Font* font = ResourceManager::GetFont("TestFont");
-		// DE::Text text;
-		// text.SetFont(font, size);
-		// text.SetString("Hello, world!");
-		// Graphics::DrawText(text, position, rotation, scale, color,(optional), and maybe other stuff that will be optional);
+		Graphics::DrawCircle(glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2), glm::vec2(100), glm::vec4(0, 0, 255, 255));
+		Graphics::DrawQuad(glm::vec2(Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(255, 0, 0, 255));
+		Graphics::DrawTriangle(glm::vec2(Window::GetWidth() - Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(0, 255, 0, 255));
 	}
 
 	void OnKeyEvent() override
 	{
-
+		
 	}
 
 	void OnMouseEvent() override

@@ -38,24 +38,24 @@ namespace DunnEngine {
 
 	struct DE_Texture // Holds the definition of a texture
 	{
-		std::string Name = "";  // The name of the texture
-		std::string Path = "";	// The path where the texture exists. This is reserved for debugging.
+		std::string Name = "";				// The name of the texture
+		std::string Path = "";				// The path where the texture exists. This is reserved for debugging.
 		int index = 0;
-		sf::Texture Texture;	// The actual sfml texture
+		sf::Texture* Texture = nullptr;		// The actual sfml texture
 	};
 	struct DE_Sound // Holds the definition of a sound
 	{
-		std::string Name = "";  // The name of the font
-		std::string Path = "";	// The path where the font exists. This is reserved for debugging.
+		std::string Name = "";				// The name of the font
+		std::string Path = "";				// The path where the font exists. This is reserved for debugging.
 		int index = 0;
-		sf::SoundBuffer Sound;	// The actual sfml font
+		sf::SoundBuffer* Sound = nullptr;	// The actual sfml font
 	};
 	struct DE_Font // Holds the definition of a font
 	{
-		std::string Name = "";  // The name of the texture
-		std::string Path = "";  // The path where the texture exists. This is reserved for debugging.
+		std::string Name = "";				// The name of the texture
+		std::string Path = "";				// The path where the texture exists. This is reserved for debugging.
 		int index = 0;
-		sf::Font Font;			// The actual sfml texture
+		sf::Font* Font = nullptr;			// The actual sfml texture
 	};
 
 	class ResourceManager

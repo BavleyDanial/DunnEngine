@@ -23,7 +23,7 @@
 namespace DunnEngine {
 
 	WindowProps Window::m_WindowProps;
-	std::shared_ptr<sf::RenderWindow> Window::m_Window = nullptr;
+	sf::RenderWindow* Window::m_Window = nullptr;
 
 	void Window::Create(const std::string& title, uint32_t width, uint32_t height, bool fullScreen, bool vSync)
 	{
@@ -33,7 +33,10 @@ namespace DunnEngine {
 		m_WindowProps.IsFullScreen = fullScreen;
 		m_WindowProps.IsVSync = vSync;
 
-		m_Window = std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), title); // create the window with the specified width, height, and title
+		sf::ContextSettings settings;
+		settings.antialiasingLevel = 16;
+
+		m_Window = new sf::RenderWindow(sf::VideoMode(width, height), title, sf::Style::Default, settings); // create the window with the specified width, height, and title
 		SetVSync(vSync);
 		SetFullScreen(fullScreen);
 	}
@@ -41,6 +44,7 @@ namespace DunnEngine {
 	void Window::Shutdown()
 	{
 		m_Window->close();
+		delete m_Window;
 	}
 
 	void Window::SetWidth(uint32_t width)

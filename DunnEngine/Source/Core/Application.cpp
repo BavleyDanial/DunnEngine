@@ -19,16 +19,9 @@
 //
 
 #include "Application.h"
-
-#include <SFML/Graphics.hpp>
-#include <Graphics/Window.h>
-#include <glm/glm.hpp>
+#include "Graphics/Window.h"
 #include "ResourceManager.h"
-#include "Logger.h"
-#include "Input.h"
-#include "KeyCodes.h"
-#include "MouseButtonCodes.h"
-
+#include "Time.h"
 #include "Core.h"
 
 namespace DunnEngine {
@@ -61,7 +54,10 @@ namespace DunnEngine {
             Window::ClearWindow();
             OnUpdate();
             Window::UpdateWindow();
+
+            Time::Update();
         }
+
 	}
 
     void Application::OnEvent()
@@ -70,16 +66,10 @@ namespace DunnEngine {
         while (Window::PollEvents(event))
         {
             if (event.type == sf::Event::Closed)
-            {
-                Window::Shutdown();
                 m_IsRunning = false;
-            }
 
             if (event.type == sf::Event::Resized)
-            {
-                // update the view to the new size of the window
                 Window::Resize(event.size.width, event.size.height);
-            }
 
             if (event.type == sf::Event::EventType::TextEntered)
                 OnKeyEvent();

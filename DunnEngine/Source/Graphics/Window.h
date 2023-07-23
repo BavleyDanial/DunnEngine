@@ -49,7 +49,7 @@ namespace DunnEngine {
 		static void Shutdown();
 
 		// returns the sfml window for any needs that are not written in this class
-		static const std::shared_ptr<sf::RenderWindow> GetSFMLWindow() { return m_Window; }
+		static sf::RenderWindow* GetSFMLWindow() { return m_Window; }
 
 		//--------------------------------- CLIENT SIDE FUNCTOINS ---------------------------------\\
 
@@ -84,7 +84,7 @@ namespace DunnEngine {
 
 	private:
 		static WindowProps m_WindowProps;				     // Holds the window's properties
-		static std::shared_ptr<sf::RenderWindow> m_Window;  // Holds the pointer to the sfml window
+		static sf::RenderWindow* m_Window;   // Holds the pointer to the sfml window
 	};
 
 }

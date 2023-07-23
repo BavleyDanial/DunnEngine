@@ -31,7 +31,8 @@ namespace DunnEngine {
 		DE_Texture* texture = new DE_Texture;
 		texture->Name = name;
 		texture->Path = path;
-		bool status = texture->Texture.loadFromFile(path); // load the file and store the status to check later if it worked properly
+		texture->Texture = new sf::Texture;
+		bool status = texture->Texture->loadFromFile(path); // load the file and store the status to check later if it worked properly
 		DE_CORE_ASSERT(status, "Could not load file\nName: " + texture->Name + "\nPath: " + texture->Path); // Stop program if status is false. This will be DELETED in release builds for performance reasons 
 
 		m_TextureBuffer.push_back(texture);
@@ -43,7 +44,8 @@ namespace DunnEngine {
 		DE_Font* font = new DE_Font;
 		font->Name = name;
 		font->Path = path;
-		bool status = font->Font.loadFromFile(path); // load the file and store the status to check later if it worked properly
+		font->Font = new sf::Font;
+		bool status = font->Font->loadFromFile(path); // load the file and store the status to check later if it worked properly
 		DE_CORE_ASSERT(status, "Could not load file\nName: " + font->Name + "\nPath: " + font->Path); // Stop program if status is false. This will be DELETED in release builds for performance reasons
 
 		m_FontBuffer.push_back(font);
@@ -55,7 +57,8 @@ namespace DunnEngine {
 		DE_Sound* sound = new DE_Sound;
 		sound->Name = name;
 		sound->Path = path;
-		bool status = sound->Sound.loadFromFile(path); // load the file and store the status to check later if it worked properly
+		sound->Sound = new sf::SoundBuffer;
+		bool status = sound->Sound->loadFromFile(path); // load the file and store the status to check later if it worked properly
 		DE_CORE_ASSERT(status, "Could not load file\nName: " + sound->Name + "\nPath: " + sound->Path); // Stop program if status is false. This will be DELETED in release builds for performance reasons
 
 		m_SoundBuffer.push_back(sound);
@@ -257,6 +260,7 @@ namespace DunnEngine {
 			return;
 		}
 		m_TextureBuffer.erase(m_TextureBuffer.begin() + texture->index);
+		delete texture->Texture;
 		delete texture;
 	}					
 	void ResourceManager::DeleteFont(const std::string& name)
@@ -268,6 +272,7 @@ namespace DunnEngine {
 			return;
 		}
 		m_FontBuffer.erase(m_FontBuffer.begin() + font->index);
+		delete font->Font;
 		delete font;
 	}					
 	void ResourceManager::DeleteSound(const std::string& name)
@@ -279,6 +284,7 @@ namespace DunnEngine {
 			return;
 		}
 		m_SoundBuffer.erase(m_SoundBuffer.begin() + sound->index);
+		delete sound->Sound;
 		delete sound;
 	}					
 	void ResourceManager::DeleteAllResources()
@@ -289,6 +295,7 @@ namespace DunnEngine {
 			DE_Texture* texture = m_TextureBuffer[0];							// Get first texture in the buffer so that it can be deleted seperatly and not be lost.
 			SortBuffer(Buffers::TextureBuffer, 0, m_TextureBuffer.size() - 1);  // Sort the buffer because buffer.erase() will change the order every iteration.
 			m_TextureBuffer.erase(m_TextureBuffer.begin());
+			delete texture->Texture;
 			delete texture;
 		}
 
@@ -298,6 +305,7 @@ namespace DunnEngine {
 			DE_Sound* sound = m_SoundBuffer[0];									// Get first sound in the buffer so that it can be deleted seperatly and not be lost.
 			SortBuffer(Buffers::SoundBuffer, 0, m_SoundBuffer.size() - 1);		// Sort the buffer because buffer.erase() will change the order every iteration.
 			m_SoundBuffer.erase(m_SoundBuffer.begin());
+			delete sound->Sound;
 			delete sound;
 		}
 
@@ -307,6 +315,7 @@ namespace DunnEngine {
 			DE_Font* font = m_FontBuffer[0];									// Get first font in the buffer so that it can be deleted seperatly and not be lost.
 			SortBuffer(Buffers::FontBuffer, 0, m_FontBuffer.size() - 1);		// Sort the buffer because buffer.erase() will change the order every iteration.
 			m_FontBuffer.erase(m_FontBuffer.begin());
+			delete font->Font;
 			delete font;
 		}
 	}

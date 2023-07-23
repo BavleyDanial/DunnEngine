@@ -24,19 +24,24 @@
 // Files to be used by client
 
 //---------EntryPoint---------//
-#include "EntryPoint.h"
+#include "Core/EntryPoint.h"
 //---------EntryPoint---------//
 
-// Main:
-#include "Application.h"
-#include "Logger.h"
-#include "Input.h"
-#include "KeyCodes.h"
-#include "MouseButtonCodes.h"
-#include "ResourceManager.h"
+// Core:
+#include "Core/Application.h"
+#include "Core/Logger.h"
+#include "Core/ResourceManager.h"
+#include "Core/Time.h"
+
+// Graphics:
+#include "Graphics/Graphics.h"
+#include "Graphics/Text.h"
+#include "Graphics/Window.h"
+
+// Input:
+#include "Input/Input.h"
+#include "Input/KeyCodes.h"
+#include "Input/MouseButtonCodes.h"
 
 // Math
 #include <glm/glm.hpp>
-
-// Graphics:
-#include "Graphics/Window.h"
