@@ -5,42 +5,53 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
+
+/// <summary>
+/// 
+/// This is the file that contains the application class and a function declration for creating an application.
+/// This application class is meant to be the base class for any client application (game) in the sandbox project.
+/// The application class is responsible for initiating any needed class, calling the different functions that the client defines (such as OnInit(), OnUpdate(), OnKeyEvent(), OnMouseEvent())
+/// To use this class the client will inherit this class and then define the CreateApplication() function in which they return a new instance of their derived class (See example in DunnSandbox)
+/// 
+/// </summary>
+
+#include <SFML/Window.hpp>
 
 namespace DunnEngine {
 
 	class Application
 	{
 	public:
-		Application();  // Constructs the Application
-		~Application(); // Destroys the Application
+		//--------------------------------- ENGINE SIDE FUNCTIONS ---------------------------------\\
 
-		// Internal methods that take care of backend stuff
+		// Constructs the Application
+		Application();
+		// Destroys the Application
+		~Application();
+		
+		// Run the application. This calls all the functions that need to happen when running the client app
 		void Run();
+		// Calls each of the client side event functions depending on the kind of the event
+		// It also does some internal engine stuff in some events
 		void OnEvent();
 
-		// Methods to be overriden by the client
+		//--------------------------------- CLIENT SIDE FUNCTIONS ---------------------------------\\
+		
+		// The Init function is only called once in the entire lifetime of the client game
+		// This function should be used for initialising anything in the game
 		virtual void OnInit() = 0;
+		// The Update function is called once every frame during the lifetime of the client game
+		// This function should be used for implementing game logic and any graphics rendering
 		virtual void OnUpdate() = 0;
-		virtual void OnKeyEvent() = 0;
-		virtual void OnMouseEvent() = 0;
-	private:
-		bool m_IsRunning = true;          // Keeping track if the application is still running
+		// The KeyEvent function is called once every frame if and only if there was a relavent event for this particular case during the lifetime of the client game
+		// This function should be used for implementing static things like a main menu or settings menu or something like that
+		virtual void OnKeyEvent(sf::Event event) = 0;
+		// The MouseEvent function is called once every frame if and only if there was a relavent event for this particular case during the lifetime of the client game
+		// This function should be used for implementing static things like a main menu or settings menu or something like that
+		virtual void OnMouseEvent(sf::Event event) = 0;
 	private:
 		static Application* s_Instance;   // Stores the ONLY instance of the application
+		bool m_IsRunning = true;          // Keeping track if the application is still running
 	};
 
 	Application* CreateApplication();     // Function to create the application instance, it MUST be defined in the client

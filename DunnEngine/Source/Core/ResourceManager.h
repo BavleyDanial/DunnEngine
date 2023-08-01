@@ -5,20 +5,14 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
+
+/// <summary>
+/// 
+/// This file includes the ResourceManager class. This class is responsible for loading assets into memory
+/// This class can load textures, load sounds, load fonts, get textures, get sounds, get fonts, delete each of them individually and delete them all at once
+/// This class can not be instantiated as an object as there is only one instance of it.
+/// 
+/// </summary>
 
 #include <vector>
 
@@ -61,29 +55,43 @@ namespace DunnEngine {
 	class ResourceManager
 	{
 	public:
-		// The next set of functions are used to load textures, fonts, audio, and potentially other stuff.
-		// They load them into their right buffers and sorts them.
+		//--------------------------------- COMMON FUNCTIONS ---------------------------------\\
+
+		// Loads the texture into memory for use later (When drawing a sprite for example). The path is relative to the DunnSandbox(Or equivilent) folder.
+		// It loads the texture and then sorts it using QuickSort. Therefore it is not recommended to call this function in OnUpdate() and instead use it in OnInit() for performance reasons
 		static void LoadTexture(const std::string& name, const std::string& path);
+		// Loads the font into memory for use later (When drawing a sprite for example). The path is relative to the DunnSandbox(Or equivilent) folder.
+		// It loads the font and then sorts it using QuickSort. Therefore it is not recommended to call this function in OnUpdate() and instead use it in OnInit() for performance reasons
 		static void LoadFont(const std::string& name, const std::string& path);
+		// Loads the sound into memory for use later (When drawing a sprite for example). The path is relative to the DunnSandbox(Or equivilent) folder.
+		// It loads the sound and then sorts it using QuickSort. Therefore it is not recommended to call this function in OnUpdate() and instead use it in OnInit() for performance reasons
 		static void LoadSound(const std::string& name, const std::string& path);
-		
-		// These set of functions are used to retrieve the textures, fonts, audio and potentially other stuff that were loaded in memory previously.
-		// They retrieve them by searching in the buffers using Binary search. This is used because it is faster than Linear search especially 
-		// when there are hundreds of resources that are loaded in memory.
+
+		// Returns a pointer to the texture using its name. It uses a binary search approach.
+		// It will do an assert in the case that no texture with that name was found.
 		static DE_Texture* GetTexture(const std::string& name, std::vector<DE_Texture*>& buffer = m_TextureBuffer);
+		// Returns a pointer to the font using its name. It uses a binary search approach.
+		// It will do an assert in the case that no font with that name was found.
 		static DE_Font* GetFont(const std::string& name, std::vector<DE_Font*>& buffer = m_FontBuffer);
+		// Returns a pointer to the sound using its name. It uses a binary search approach.
+		// It will do an assert in the case that no sound with that name was found.
 		static DE_Sound* GetSound(const std::string& name, std::vector<DE_Sound*>& buffer = m_SoundBuffer);
 
-		// These set of functions are used to delete specific textures, sounds, fonts, and potentially other stuff that were loaded in memory previously.
-		// 
+		// Deletes the texture with the name provided.
+		// It will assert if no texture with that name was found.
 		static void DeleteTexture(const std::string& name);
+		// Deletes the font with the name provided.
+		// It will assert if no font with that name was found.
 		static void DeleteFont(const std::string& name);
+		// Deletes the sound with the name provided.
+		// It will assert if no sound with that name was found.
 		static void DeleteSound(const std::string& name);
-	public:
+		// Deletes all resources (this includes textures, sounds, and fonts) form memory.
+		// This is used if needed to transition to a different level with different assets or needed to load different quality assets if needed to change that dynamically
 		static void DeleteAllResources();
 	private:
-		// This function sorts the buffers using QuickSort. This is done because it is faster than other methods like selection sort especially
-		// especially when there are hundreds of resources that are loaded in memory.
+		// This function sorts the buffers using QuickSort.
+		// This is done to ensure maximum efficiency when retrieving any type of asset.
 		static void SortBuffer(Buffers bufferType, int leftIndex, int rightIndex);
 	private:
 		static std::vector<DE_Texture*> m_TextureBuffer; // Holds loaded textures

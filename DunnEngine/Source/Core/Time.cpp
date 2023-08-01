@@ -41,19 +41,19 @@ namespace DunnEngine {
     Time& Time::operator-=(const sf::Time& rhs)
     {
         m_Time -= rhs;
-        return *this;
+        return *this;       // Return this time instance after the modification
     }
 
     Time& Time::operator+=(const sf::Time& rhs)
     {
         m_Time -= rhs;
-        return *this;
+        return *this;       // Return this time instance after the modification
     }
 
     Time& Time::operator=(const sf::Time& rhs)
     {
         m_Time = rhs;
-        return *this;
+        return *this;       // Return this time instance after the modification
     }
     
 }

@@ -9,8 +9,8 @@ namespace DunnEngine {
 		sf::RectangleShape quad;
 		quad.setSize({ 1, 1 });
 		quad.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
-		quad.setOrigin(quad.getSize().x / 2, quad.getSize().y / 2);							// This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		quad.setPosition(position.x, Window::GetHeight() - position.y);						// The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
+		quad.setOrigin(quad.getSize().x / 2, quad.getSize().y / 2);		// This is done because sfml by default uses the top left of a quad as the origin not the center of the quad.
+		quad.setPosition(position.x, Window::GetHeight() - position.y); // The reason why we negate the y-position from the window height because sfml by default uses the top left of the window as (0, 0). By doing this the new (0, 0) point is the buttom left not top left.
 		quad.setScale(scale.x, scale.y);
 		quad.setRotation(rotationAngle);
 
@@ -22,8 +22,8 @@ namespace DunnEngine {
 		circle.setPointCount(200);
 		circle.setRadius(0.5f);
 		circle.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
-		circle.setOrigin(circle.getLocalBounds().getSize().x / 2, circle.getLocalBounds().getSize().x / 2); // This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		circle.setPosition(position.x, Window::GetHeight() - position.y);						// The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
+		circle.setOrigin(circle.getLocalBounds().getSize().x / 2, circle.getLocalBounds().getSize().x / 2); // This is done because sfml by default uses the top left of a circle as the origin not the center of the circle.
+		circle.setPosition(position.x, Window::GetHeight() - position.y);									// The reason why we negate the y-position from the window height because sfml by default uses the top left of the window as (0, 0). By doing this the new (0, 0) point is the buttom left not top left.
 		circle.setScale(scale.x, scale.y);
 
 		Window::GetSFMLWindow()->draw(circle);
@@ -34,10 +34,8 @@ namespace DunnEngine {
 		triangle.setPointCount(3);
 		triangle.setRadius(1.0f);
 		triangle.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
-		triangle.setOrigin(triangle.getLocalBounds().getSize().x / 2, triangle.getLocalBounds().getSize().y / 2); // This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		triangle.setPosition(position.x, Window::GetHeight() - position.y);						// The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
-		triangle.setRotation(rotationAngle);
-		triangle.setScale(scale.x, scale.y);
+		triangle.setOrigin(triangle.getLocalBounds().getSize().x / 2, triangle.getLocalBounds().getSize().y / 2); // This is done because sfml by default uses the top left of a triangle as the origin not the center of the triangle.
+		triangle.setPosition(position.x, Window::GetHeight() - position.y);										  // The reason why we negate the y-position from the window height because sfml by default uses the top left of the window as (0, 0). By doing this the new (0, 0) point is the buttom left not top left.					
 
 		Window::GetSFMLWindow()->draw(triangle);
 	}
@@ -46,7 +44,7 @@ namespace DunnEngine {
 		sf::Sprite sprite;
 		sprite.setTexture(*texture->Texture);
 		sprite.setOrigin(texture->Texture->getSize().x / 2, texture->Texture->getSize().y / 2); // This is done because sfml by default uses the top left of a sprite as the origin not the center of the sprite.
-		sprite.setPosition(position.x, Window::GetHeight() - position.y);						// The position is relative to the top left of the window, meaning the coordinates of the top left is (0, 0) and buttom right is (window.width, window.height)
+		sprite.setPosition(position.x, Window::GetHeight() - position.y);						// The reason why we negate the y-position from the window height because sfml by default uses the top left of the window as (0, 0). By doing this the new (0, 0) point is the buttom left not top left.	
 		sprite.setRotation(rotationAngle);
 		sprite.setScale(scale.x, scale.y);
 		
@@ -54,7 +52,7 @@ namespace DunnEngine {
 	}
 	void Graphics::Print(Text& text, const glm::vec2& position, float rotationAngle, const glm::vec2& scale)
 	{
-		text.SetPosition({ position.x, Window::GetHeight() - position.y });
+		text.SetPosition({ position.x, Window::GetHeight() - position.y }); // The reason why we negate the y-position from the window height because sfml by default uses the top left of the window as (0, 0). By doing this the new (0, 0) point is the buttom left not top left.
 		text.SetRotation(rotationAngle);
 		text.SetScale(scale);
 

@@ -3,25 +3,46 @@
 //
 // TDE - The Dunn Engine
 
+/// <summary>
+/// 
+/// This is the file that you use to create anything with the engine.
+/// 1. You must include <Core/EntryPoint.h> in this file ONLY. As it is where the main function sits
+/// 2. You must include <DunnEngine.h> to access the engine's features. This can be included in any file that needs it.
+/// 3. There must be a class that inherits from DunnEngine::Application. This class is what the engine expects to find in order to run.
+/// 4. There must be a DunnEngine::Application* DunnEngine::CreateApplication() function (outisde of the class) that returns a new instance of the class.
+/// 
+/// The class that inherits from DunnEngine::Application (in this case Sandbox) includes 4 functions that you can use and they have different properties
+/// 1. An OnInit() function that runs only once at the start of the game. This should be used to initialize anything.
+/// 2. An OnUpdate() function that runs once every frame. This is where you apply your logic in the game and render stuff.
+/// 3. An OnKeyEvent() function that runs when there is a key event (a key being pressed or released or held). This should not be used in the logic but instead should be used for things like enabling a pause menu and similar things. 
+/// 4. An OnMouseEvent() function that runs when there is a mouse event (moues being moved or a button pressed or released or held) This should not be used in the logic but instead should be used for things like enabling a pause menu and similar things.
+/// 
+/// </summary>
+
+#include <EntryPoint.h>
 #include <DunnEngine.h>
+#include <iostream>
+
 
 using namespace DunnEngine;
 
 class Sandbox : public DunnEngine::Application
 {
 public:
-	sf::Sound soundPlayer;	// Should be managed by engine in future versions. Will result in a warning for now due to lack of destruction
+	SoundPlayer soundPlayer;	// Used to show examples on using Sound in this version. Results in a warning due to lack of correct destruction when used as a public variable
+	DE_Sound* sound;			// Used to show examples on using Sound in this version.
 
-	Time soundTimer;		// Used to show examples on using Time in this version
-	Time clickTimer;		// Used to show examples on using Time in this version
+	Time clickTimer;			// Used to show examples on using Time in this version
 
-	glm::vec2 spritePos;	// Used to show examples on drawing a Sprite in this version
-	float spriteRot;		// Used to show examples on drawing a Sprite in this version
-	glm::vec2 spriteScale;	// Used to show examples on drawing a Sprite in this version
+	glm::vec2 spritePos;		// Used to show examples on drawing a Sprite in this version
+	float spriteRot;			// Used to show examples on drawing a Sprite in this version
+	glm::vec2 spriteScale;		// Used to show examples on drawing a Sprite in this version
+	DE_Texture* texture;		// Used to show examples on drawing a Sprite in this version
 
-	glm::vec2 textPos;		// Used to show examples on drawing a Text in this version
-	float textRot;			// Used to show examples on drawing a Text in this version
-	glm::vec2 textScale;	// Used to show examples on drawing a Text in this version
+	glm::vec2 textPos;			// Used to show examples on drawing a Text in this version
+	float textRot;				// Used to show examples on drawing a Text in this version
+	glm::vec2 textScale;		// Used to show examples on drawing a Text in this version
+	DE_Font* font;				// Used to show examples on drawing a Text in this version
 public:
 	void OnInit() override
 	{
@@ -60,22 +81,24 @@ public:
 			ResourceManager::LoadFont("TestFont", "Resources/TestFont.ttf");		  // This is how to load a font. The arguments are as follows: the name of the font inside the memory, the path to the file relative to DunnSandbox folder
 			// All the load functions should be used in OnInit() not OnUpdate() as it sorts the buffer every time it is used which slows the program down. If you must use it in OnUpdate just be aware of the performance consequence.
 			// Tested formats so far: .png for textures, .wav for sounds, .ttf for fonts
-			DE_Texture* texture = ResourceManager::GetTexture("TestTexture");		  // Gets the pointer to a texture. This takes in a name of the texture you previously loaded. If it is not able to find it, it will return a nullptr
-			DE_Sound* sound = ResourceManager::GetSound("TestSound");				  // Gets the pointer to a sound. This takes in a name of the sound you previously loaded. If it is not able to find it, it will return a nullptr
-			DE_Font* font = ResourceManager::GetFont("TestFont");					  // Gets the pointer to a font. This takes in a name of the font you previously loaded. If it is not able to find it, it will return a nullptr
+			texture = ResourceManager::GetTexture("TestTexture");		  // Gets the pointer to a texture. This takes in a name of the texture you previously loaded. If it is not able to find it, it will return a nullptr
+			sound = ResourceManager::GetSound("TestSound");				  // Gets the pointer to a sound. This takes in a name of the sound you previously loaded. If it is not able to find it, it will return a nullptr
+			font = ResourceManager::GetFont("TestFont");					  // Gets the pointer to a font. This takes in a name of the font you previously loaded. If it is not able to find it, it will return a nullptr
 			// There are also delete functions like:
 			// ResourceManager::DeleteTexture("TestTexture");		// Deletes the texture with this name. Will print an error when no texture found.
 			// ResourceManager::DeleteSound("TestSound");			// Deletes the sound with this name. Will print an error when no sound found.
 			// ResourceManager::DeleteFont("TestFont");				// Deletes the font with this name. Will print an error when no font found.
 			// ResourceManager::DeleteAllResources();				// Deletes all resources.
 
-			spritePos = glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2);
-			spriteScale = glm::vec2(1);
-			spriteRot = 0;
+			spritePos = glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2);			// Set position to center of screen
+			spriteScale = glm::vec2(1);														// Set the scale to 1
+			spriteRot = 0;																	// Set the rotation to 0 degrees
 
 			textPos = glm::vec2(Window::GetWidth() / 2, (Window::GetHeight() / 2) - (Window::GetHeight() / 3));
 			textScale = glm::vec2(1);
 			textRot = 0;
+
+			soundPlayer.SetSound(sound);
 
 			// Math
 			// For now there is no built in math functions. You can use glm to use math. See the glm documentation here https://glm.g-truc.net/0.9.9/api/index.html
@@ -84,67 +107,67 @@ public:
 
 	void OnUpdate() override
 	{
-		// Example for displaying sprites on screen in this version
-		DE_Texture* texture = ResourceManager::GetTexture("TestTexture");
-		Graphics::DrawSprite(texture, spritePos, spriteRot, spriteScale);
+		// Example for using inputs to move a sprite
 		if (Input::IsKeyPressed(TDE_KEY_W))
-			spritePos.y += 300 * Time::GetDeltaTime().asSeconds();
+			spritePos.y += 1200 * Time::GetDeltaTime().asSeconds();
 		if (Input::IsKeyPressed(TDE_KEY_S))
-			spritePos.y -= 300 * Time::GetDeltaTime().asSeconds();
+			spritePos.y -= 1200 * Time::GetDeltaTime().asSeconds();
 		if (Input::IsKeyPressed(TDE_KEY_D))
-			spritePos.x += 300 * Time::GetDeltaTime().asSeconds();
+			spritePos.x += 1200 * Time::GetDeltaTime().asSeconds();
 		if (Input::IsKeyPressed(TDE_KEY_A))
-			spritePos.x -= 300 * Time::GetDeltaTime().asSeconds();
+			spritePos.x -= 1200 * Time::GetDeltaTime().asSeconds();
 
+		// Example for using inputs to scale a sprite
 		if (Input::IsKeyPressed(TDE_KEY_E))
-			spriteRot += 10 * Time::GetDeltaTime().asSeconds();
+			spriteScale.x += 5 * Time::GetDeltaTime().asSeconds();
 		if (Input::IsKeyPressed(TDE_KEY_Q))
-			spriteRot -= 10 * Time::GetDeltaTime().asSeconds();
+			spriteScale.y += 5 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_C))
+			spriteScale.x -= 5 * Time::GetDeltaTime().asSeconds();
+		if (Input::IsKeyPressed(TDE_KEY_Z))
+			spriteScale.y -= 5 * Time::GetDeltaTime().asSeconds();
 
-		// Example for displaying a text in this version
-		DE_Font* font = ResourceManager::GetFont("TestFont");
+		// Example for using inputs to rotate a sprite 
+		spriteRot += 15 * Time::GetDeltaTime().asSeconds();
+
+		// Example for displaying a text
 		Text text;
 		text.SetFont(font, 50);
 		text.SetString("Hello, world!");
+		text.SetSmoothing(false);
 		Graphics::Print(text, textPos, textRot, textScale);
 
-		// Example for playing sound in this version
-		DE_Sound* sound = ResourceManager::GetSound("TestSound");
-		if (!soundPlayer.getBuffer())
-			soundPlayer.setBuffer(*sound->Sound);
-		
-		if (Input::IsKeyPressed(TDE_KEY_F) && soundTimer.GetTime().asMilliseconds() <= 0)
-		{
-			soundPlayer.play();
-			soundTimer = soundPlayer.getBuffer()->getDuration(); // Add delay that is equal to the length of the track. Should be managed by engine side
-		}
-		else
-		{
-			soundTimer -= Time::GetDeltaTime();
-		}
+		// Example for playing sound
+		soundPlayer.Play();
+
+		// Example for pausing a sound
+		if (Input::IsKeyPressed(TDE_KEY_F))
+			soundPlayer.Pause();
 
 		// Example for logging something
 		if (Input::IsMouseButtonPressed(TDE_MOUSE_LEFT) && clickTimer.GetTime().asMicroseconds() <= 0)
 		{
 			LOG_INFO("Left Clicked!");
-			clickTimer.SetTime(1);
+			clickTimer.SetTime(1);	// setting a timer for 1 seconds
 		}
 		else
 		{
 			clickTimer -= Time::GetDeltaTime();
 		}
 
-		Graphics::DrawCircle(glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2), glm::vec2(100), glm::vec4(0, 0, 255, 255));
-		Graphics::DrawQuad(glm::vec2(Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(255, 0, 0, 255));
-		Graphics::DrawTriangle(glm::vec2(Window::GetWidth() - Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(0, 255, 0, 255));
+		// Examples for displaying many shapes
+		Graphics::DrawCircle(glm::vec2(Window::GetWidth() / 2, Window::GetHeight() / 2), glm::vec2(100), glm::vec4(0, 0, 255, 255));	// Drawing a circle in the center with a 100 radius (scale is treated as a radius) and blue color (rgba)
+		Graphics::DrawQuad(glm::vec2(Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(255, 0, 0, 255));	// Drawing a quad (square or rectangle) in the center with a 100 radius (scale is treated as a radius) and red color (rgba)
+		Graphics::DrawTriangle(glm::vec2(Window::GetWidth() - Window::GetWidth() / 4, Window::GetHeight() / 2), 35, glm::vec2(50), glm::vec4(0, 255, 0, 255));	// Drawing a triangle in the center with a 100 radius (scale is treated as a radius) and green color (rgba)
+		Graphics::DrawSprite(texture, spritePos, spriteRot, spriteScale); // Drawing a sprite with variables as position, rotation, and scale. This enables you to manipulate the sprite on the fly
 	}
 
-	void OnKeyEvent() override
+	void OnKeyEvent(sf::Event event) override
 	{
-		
+
 	}
 
-	void OnMouseEvent() override
+	void OnMouseEvent(sf::Event event) override
 	{
 
 	}

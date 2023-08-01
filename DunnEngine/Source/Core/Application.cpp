@@ -31,7 +31,7 @@ namespace DunnEngine {
 	Application::Application()
 	{
         Logger::Init();
-        DE_CORE_ASSERT(!s_Instance, "Application already exists!");
+        DE_CORE_ASSERT(!s_Instance, "Application already exists!");     // If there was an application class that was created before don't create a new one and assert
         LOG_CORE_INFO("DunnEngine instanstiated!");
 
         s_Instance = this;
@@ -45,7 +45,7 @@ namespace DunnEngine {
 
 	void Application::Run()
 	{
-		OnInit();
+		OnInit();       // Call OnInit() outside of the main while loop to run it only once
 
         while (m_IsRunning)
         {
@@ -72,26 +72,26 @@ namespace DunnEngine {
                 Window::Resize(event.size.width, event.size.height);
 
             if (event.type == sf::Event::EventType::TextEntered)
-                OnKeyEvent();
+                OnKeyEvent(event);
             if (event.type == sf::Event::EventType::KeyPressed)
-                OnKeyEvent();
+                OnKeyEvent(event);
             if (event.type == sf::Event::EventType::KeyReleased)
-                OnKeyEvent();
+                OnKeyEvent(event);
 
             if (event.type == sf::Event::EventType::MouseMoved)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseButtonPressed)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseButtonReleased)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseWheelScrolled)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseWheelScrolled)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseEntered)
-                OnMouseEvent();
+                OnMouseEvent(event);
             if (event.type == sf::Event::EventType::MouseLeft)
-                OnMouseEvent();
+                OnMouseEvent(event);
         }
     }
 

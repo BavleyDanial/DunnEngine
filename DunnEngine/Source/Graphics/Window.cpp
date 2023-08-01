@@ -3,20 +3,6 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
 
 #include "Window.h"
 
@@ -33,12 +19,9 @@ namespace DunnEngine {
 		m_WindowProps.IsFullScreen = fullScreen;
 		m_WindowProps.IsVSync = vSync;
 
-		sf::ContextSettings settings;
-		settings.antialiasingLevel = 16;
-
-		m_Window = new sf::RenderWindow(sf::VideoMode(width, height), title, sf::Style::Default, settings); // create the window with the specified width, height, and title
-		SetVSync(vSync);
-		SetFullScreen(fullScreen);
+		m_Window = new sf::RenderWindow(sf::VideoMode(width, height), title); // create the window with the specified width, height, and title
+		SetVSync(vSync);			// set vsync if vsync is enabled
+		SetFullScreen(fullScreen);  // set fullscreen if fullscreen is enabled
 	}
 
 	void Window::Shutdown()
@@ -59,7 +42,7 @@ namespace DunnEngine {
 	{
 		m_WindowProps.Width = width;
 		m_WindowProps.Height = height;
-		sf::FloatRect viewPort = sf::FloatRect(0, 0, width, height);
+		sf::FloatRect viewPort = sf::FloatRect(0, 0, width, height);		// Reset the viewport to match our new width and height
 		m_Window->setView(sf::View(viewPort));
 	}
 	
@@ -80,11 +63,15 @@ namespace DunnEngine {
 	void Window::SetFullScreen(bool enabled)
 	{
 		if (enabled)
-			m_Window->create(sf::VideoMode::getFullscreenModes()[0], m_WindowProps.Title, sf::Style::Fullscreen);
+			m_Window->create(sf::VideoMode::getFullscreenModes()[0], m_WindowProps.Title, sf::Style::Fullscreen);	// Set the window fullscreen to the primary monitor. This could be improved by supporting different fullscreen modes
 		else
 			m_Window->create(sf::VideoMode(m_WindowProps.Width, m_WindowProps.Height), m_WindowProps.Title);
 
+		m_WindowProps.Width = m_Window->getSize().x;
+		m_WindowProps.Height = m_Window->getSize().y;
+
 		m_WindowProps.IsFullScreen = enabled;
+		Resize(GetWidth(), GetHeight());
 	}
 	
 	bool Window::IsFullScreen()

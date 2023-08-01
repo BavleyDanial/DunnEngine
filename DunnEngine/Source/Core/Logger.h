@@ -5,41 +5,30 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
 
+/// <summary>
+/// 
+/// This file includes the Logger class. This class is responsible for all the logging from both engine and client sides.
+/// This class can log an error, a trace, an info, a warnning, into the console and in the future in files.
+/// This class can not be instantiated as an object as there is only one instance of it.
+/// 
+/// </summary>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
-
-/*
-		A logging class that will be responsible for the logging of the engine and the game (the client) developed by the engine.
-		This logging class allows for color coded messages in the command line according to the importance of the message.
-		The backend of the logging class is managed by spdlog
-
-		An error will be displayed as a red message, a warning will be displayed as a yellow message,
-		an info will be displayed as a green message, and a trace will be displayed as a normal message
-*/
 
 namespace DunnEngine {
 
 	class Logger
 	{
 	public:
+		//--------------------------------- ENGINE SIDE FUNCTIONS ---------------------------------\\
+
+		// Initialises the logging class with the correct printing format and color coding
 		static void Init();
+		// Returns a pointer to the core logger. This is reserved for potential debugging needs.
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		// Returns a pointer to the client logger. This is reserved for potential debugging needs.
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 
 	private:
@@ -49,7 +38,7 @@ namespace DunnEngine {
 
 }
 
-// Definitions for the functions that will be used for logging, this makes it easier to write
+// Definitions for the functions that will be used for logging, this makes writing a log easier.
 // For example: We can use CORE_TRACE("something") instead of DunnEngine::Logger::GetCoreLogger()->trace("something")
 #define LOG_CORE_TRACE(...)			::DunnEngine::Logger::GetCoreLogger()->trace(__VA_ARGS__)
 #define LOG_CORE_INFO(...)			::DunnEngine::Logger::GetCoreLogger()->info(__VA_ARGS__)

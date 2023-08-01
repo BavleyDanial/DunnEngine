@@ -5,21 +5,14 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
 
+/// <summary>
+/// 
+/// This file includes the Input Class. This class is responsible for managing all inputs.
+/// This class can. detect key presses, mouse button presses, getting mouse position and setting the mouse position.
+/// This class can not be instantiated as an object as there is only one instance of it.
+/// 
+/// </summary>
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
@@ -31,25 +24,29 @@ namespace DunnEngine {
 	class Input
 	{
 	public:
+		//--------------------------------- COMMON FUNCTIONS ---------------------------------\\
+
+		// Get the status of the provided key
 		static bool IsKeyPressed(int key)
 		{
-			return sf::Keyboard::isKeyPressed((sf::Keyboard::Scancode) key);
+			DE_CORE_ASSERT(!(key < 0 || key > 100), "Unkown key, this key is not in the range of supported keys");
+			return sf::Keyboard::isKeyPressed((sf::Keyboard::Key) key);
 		}
+		// Get the status of the provided mouse button
 		static bool IsMouseButtonPressed(int button)
 		{
+			DE_CORE_ASSERT(!(button < 0 || button > 4), "Unkown mouse button, this key is not in the range of supported buttons");
 			return sf::Mouse::isButtonPressed((sf::Mouse::Button) button);
 		}
+		// Get the current position of the mouse cursor relative to the screen
 		static glm::vec2 GetMousePosition()
 		{
-			return { (float)sf::Mouse::getPosition().x, (float)sf::Mouse::getPosition().y };
+			return { (float)sf::Mouse::getPosition().x, Window::GetHeight() - (float)sf::Mouse::getPosition().y };
 		}
+		// Set the mouse position to a specific pixel
 		static void SetMousePoisiton(float x, float y)
 		{
-			sf::Mouse::setPosition(sf::Vector2i(x, y));
-		}
-		static void SetMousePoisiton(float x, float y, const sf::WindowBase& relativeWindow)
-		{
-			sf::Mouse::setPosition(sf::Vector2i(x, y), relativeWindow);
+			sf::Mouse::setPosition(sf::Vector2i(x, Window::GetHeight() - y));
 		}
 	};
 
