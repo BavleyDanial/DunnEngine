@@ -6,6 +6,9 @@
 
 #include "ResourceManager.h"
 
+#include <sstream>
+#include <fstream>
+
 namespace DunnEngine {
 
 	std::vector<DE_Texture*> ResourceManager::m_TextureBuffer;
@@ -14,7 +17,11 @@ namespace DunnEngine {
 
 	void ResourceManager::LoadTexture(const std::string& name, const std::string& path)
 	{
-		DE_Texture* texture = new DE_Texture;
+		DE_CORE_ASSERT(!name.empty(), "Texture name is invalid!");
+		DE_CORE_ASSERT(!path.empty(), "Texture Path is invalid!");
+		DE_CORE_ASSERT(path.find(".png") != -1, "DunnEngine only supports .png files for textures for now!");
+
+		DE_Texture* texture = new DE_Texture;  // holds a pointer to the new texture
 		texture->Name = name;
 		texture->Path = path;
 		texture->Texture = new sf::Texture;
@@ -27,7 +34,11 @@ namespace DunnEngine {
 
 	void ResourceManager::LoadFont(const std::string& name, const std::string& path)
 	{
-		DE_Font* font = new DE_Font;
+		DE_CORE_ASSERT(!name.empty(), "Font name is invalid!");
+		DE_CORE_ASSERT(!path.empty(), "Font Path is invalid!");
+		DE_CORE_ASSERT(path.find(".ttf") != -1, "DunnEngine only supports .ttf files for fonts for now!");
+
+		DE_Font* font = new DE_Font;    // Holds a pointer to the new font
 		font->Name = name;
 		font->Path = path;
 		font->Font = new sf::Font;
@@ -40,7 +51,11 @@ namespace DunnEngine {
 
 	void ResourceManager::LoadSound(const std::string& name, const std::string& path)
 	{
-		DE_Sound* sound = new DE_Sound;
+		DE_CORE_ASSERT(!name.empty(), "Sound name is invalid!");
+		DE_CORE_ASSERT(!path.empty(), "Sound Path is invalid!");
+		DE_CORE_ASSERT(path.find(".wav") != -1, "DunnEngine only supports .wav files for sounds for now!");
+
+		DE_Sound* sound = new DE_Sound;   // Holds a pointer to the new sound
 		sound->Name = name;
 		sound->Path = path;
 		sound->Sound = new sf::SoundBuffer;
@@ -49,6 +64,114 @@ namespace DunnEngine {
 
 		m_SoundBuffer.push_back(sound);
 		SortBuffer(Buffers::SoundBuffer, 0, m_SoundBuffer.size() - 1); // Sort the buffer supplying its type and first and last indicies
+	}
+
+	void ResourceManager::LoadWithXML(const std::string& path)
+	{
+		DE_CORE_ASSERT(!path.empty(), "This XML path is invalid!");
+		DE_CORE_ASSERT(path.find(".xml") != -1, "This DunnEngine feature only works with xml files!");		// If file is not an xml file then assert. This will be DELETED in release builds for performance reasons
+
+		std::ifstream xmlFile;	// Holds the xmlFile provided
+		xmlFile.open(path);
+		DE_CORE_ASSERT(xmlFile.is_open(), "Could not open this XML file!");		// If file couldn't be opened properly assert. This will be DELETED in release builds for performance reasons 
+
+		std::stringstream contents;	// Holds the string content of the file
+		contents << xmlFile.rdbuf(); // reads the string from the file into the contents variable
+		xmlFile.close();
+
+		int textureOffset = contents.str().find("Textures");
+		int fontOffset = contents.str().find("Fonts");
+		int soundOffset = contents.str().find("Sounds");
+		
+		// Find all textures in the xml file and load them
+		while (textureOffset != -1)
+		{
+			int nameStart = contents.str().find("name", textureOffset) + 5;	// find the start of the name of the texture
+
+			std::string textureName;
+			int offset = nameStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the names are defined by <name>the name</name> so finding the < after the name start indicates the end of the name
+			while (contents.str()[offset] != '<')
+			{
+				textureName += contents.str()[offset];		// Add the character with this offset (from the nameStart) to the name
+				offset++;
+			}
+
+			int locationStart = contents.str().find("location", textureOffset) + 9;	// find the start of the location of the texture
+
+			std::string textureLocation;
+			offset = locationStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the locations are defined by <location>the location</location> so finding the < after the location start indicates the end of the location
+			while (contents.str()[offset] != '<')
+			{
+				textureLocation += contents.str()[offset];	// Add the character with this offset (from the locationStart) to the location
+				offset++;
+			}
+			LoadTexture(textureName, textureLocation);
+			textureOffset = contents.str().find("Textures", textureOffset + 9);		// Update the offset to not find the same Textures attribute
+		}
+
+		// Find all fonts in the xml file and load them
+		while (fontOffset != -1)
+		{
+			int nameStart = contents.str().find("name", fontOffset) + 5; // find the start of the name of the font
+
+			std::string fontName;
+			int offset = nameStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the names are defined by <name>the name</name> so finding the < after the name start indicates the end of the name
+			while (contents.str()[offset] != '<')
+			{
+				fontName += contents.str()[offset];		// Add the character with this offset (from the nameStart) to the name
+				offset++;
+			}
+
+			int locationStart = contents.str().find("location", fontOffset) + 9; // find the start of the location of the font
+
+			std::string fontLocation;
+			offset = locationStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the locations are defined by <location>the location</location> so finding the < after the location start indicates the end of the location
+			while (contents.str()[offset] != '<')
+			{
+				fontLocation += contents.str()[offset];	// Add the character with this offset (from the locationStart) to the location
+				offset++;
+			}
+			LoadFont(fontName, fontLocation);
+			fontOffset = contents.str().find("Fonts", fontOffset + 6);			// Update the offset to not find the same Fonts attribute
+		}
+
+		// Find all sounds in the xml file and load them
+		while (soundOffset != -1)
+		{
+			int nameStart = contents.str().find("name", soundOffset) + 5; // find the start of the name of the sound
+
+			std::string soundName;
+			int offset = nameStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the names are defined by <name>the name</name> so finding the < after the name start indicates the end of the name
+			while (contents.str()[offset] != '<')
+			{
+				soundName += contents.str()[offset];	// Add the character with this offset (from the nameStart) to the name
+				offset++;
+			}
+
+			int locationStart = contents.str().find("location", soundOffset) + 9;	// find the start of the location of the sound
+
+			std::string soundLocation;
+			offset = locationStart;
+			// Iterate through until we meet the end of the name
+			// in the xml file the locations are defined by <location>the location</location> so finding the < after the location start indicates the end of the location
+			while (contents.str()[offset] != '<')
+			{
+				soundLocation += contents.str()[offset]; // Add the character with this offset (from the locationStart) to the location
+				offset++;
+			}
+			LoadSound(soundName, soundLocation);
+			soundOffset = contents.str().find("Sounds", soundOffset + 8);			// Update the offset to not find the same Sounds attribute
+		}
 	}
 
 	void ResourceManager::SortBuffer(Buffers bufferType, int leftIndex, int rightIndex)
