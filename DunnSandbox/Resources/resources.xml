@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <res category="Textures">
+    <name>TestTexture</name>
+    <location>Resources/TestTexture.png</location>
+  </res>
+   <res category="Fonts">
+    <name>F</name>
+    <location>Resources/TestFont.ttf</location>
+  </res>
+  <res category="Textures">
+    <name>A</name>
+    <location>Resources/TestTexture.png</location>
+  </res>
+   <res category="Fonts">
+    <name>S</name>
+    <location>Resources/TestFont.ttf</location>
+  </res>
+  <res category="Textures">
+    <name>B</name>
+    <location>Resources/TestTexture.png</location>
+  </res>
+  <res category="Fonts">
+    <name>TestFont</name>
+    <location>Resources/TestFont.ttf</location>
+  </res>
+  <res category="Sounds">
+    <name>TestSound</name>
+    <location>Resources/TestAudio.wav</location>
+  </res>
+  <res category="Sounds">
+    <name>G</name>
+    <location>Resources/TestAudio.wav</location>
+  </res>
+  <res category="Sounds">
+    <name>K</name>
+    <location>Resources/TestAudio.wav</location>
+  </res>
+</resources>

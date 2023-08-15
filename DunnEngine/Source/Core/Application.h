@@ -22,6 +22,8 @@ namespace DunnEngine {
 	class Application
 	{
 	public:
+		float FPS = 0;			// MUST REMOVE FROM HERE TO WINDOW OR TIME CLASS
+	public:
 		//--------------------------------- ENGINE SIDE FUNCTIONS ---------------------------------\\
 
 		// Constructs the Application

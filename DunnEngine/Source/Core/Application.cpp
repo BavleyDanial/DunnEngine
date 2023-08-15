@@ -47,15 +47,21 @@ namespace DunnEngine {
 	{
 		OnInit();       // Call OnInit() outside of the main while loop to run it only once
 
+        std::chrono::high_resolution_clock::time_point start;           // Need to update Time class to be able to handle this
+        std::chrono::high_resolution_clock::time_point end;             // Need to update Time class to be able to handle this
+
         while (m_IsRunning)
         {
+            start = std::chrono::high_resolution_clock::now();
             OnEvent();
+            Time::Update();
 
             Window::ClearWindow();
             OnUpdate();
             Window::UpdateWindow();
+            end = std::chrono::high_resolution_clock::now();
 
-            Time::Update();
+            FPS = (float)1e9 / (float)std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
         }
 
 	}

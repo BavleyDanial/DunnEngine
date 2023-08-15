@@ -34,14 +34,15 @@ namespace DunnEngine {
 	{
 		Resize(width, m_WindowProps.Height);
 	}
-	void Window::SetHeight(uint32_t height)
+	void Window::SetHeight(uint32_t h)
 	{
-		Resize(height, m_WindowProps.Height);
+		Resize(m_WindowProps.Width, h);
 	}
 	void Window::Resize(uint32_t width, uint32_t height)
 	{
 		m_WindowProps.Width = width;
 		m_WindowProps.Height = height;
+		m_Window->setSize({ width, height });
 		sf::FloatRect viewPort = sf::FloatRect(0, 0, width, height);		// Reset the viewport to match our new width and height
 		m_Window->setView(sf::View(viewPort));
 	}

@@ -19,7 +19,6 @@ namespace DunnEngine {
 
     void Time::Update()
     {
-
         m_DeltaTime = m_DeltaClock.restart();
     }
 

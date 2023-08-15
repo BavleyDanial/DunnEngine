@@ -19,25 +19,28 @@
 /// 
 /// </summary>
 
+// <notes>
+// 
+// Sandbox must create a window, crash when no window is created, need to fix that.
+// 
+// </notes>
+
 #include <EntryPoint.h>
 #include <DunnEngine.h>
-#include <iostream>
-
 
 using namespace DunnEngine;
 
 class Sandbox : public DunnEngine::Application
 {
 public:
-	
-public:
 	void OnInit() override
 	{
-		
+
 	}
 
 	void OnUpdate() override
 	{
+
 	}
 
 	void OnKeyEvent(sf::Event event) override

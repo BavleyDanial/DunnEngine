@@ -66,6 +66,9 @@ namespace DunnEngine {
 		// Loads the sound into memory for use later (When drawing a sprite for example). The path is relative to the DunnSandbox(Or equivilent) folder.
 		// It loads the sound and then sorts it using QuickSort. Therefore it is not recommended to call this function in OnUpdate() and instead use it in OnInit() for performance reasons
 		static void LoadSound(const std::string& name, const std::string& path);
+		// Loads all resource types in memory through an xml file instead of having to call them manually in code. The path is relative to DunnSandbox(Or equivilent) folder.
+		// To learn about the xml format used see the example provided in the Resources folder.
+		static void LoadWithXML(const std::string& path);
 
 		// Returns a pointer to the texture using its name. It uses a binary search approach.
 		// It will do an assert in the case that no texture with that name was found.
