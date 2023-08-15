@@ -35,12 +35,13 @@ class Sandbox : public DunnEngine::Application
 public:
 	void OnInit() override
 	{
-
+		Window::Create("Hello", 1280, 720, false, true);
+		Window::SetVSync(true);
 	}
 
 	void OnUpdate() override
 	{
-
+		LOG_INFO("FPS: {0}", (int)FPS);
 	}
 
 	void OnKeyEvent(sf::Event event) override

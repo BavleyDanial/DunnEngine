@@ -3,20 +3,6 @@
 //
 // TDE - The Dunn Engine
 //
-// Permission is granted to DunnGames to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-//    you must not claim that you wrote the original software.
-//    If you use this software in a product, an acknowledgment
-//    in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-//    and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
 
 #include "Application.h"
 #include "Graphics/Window.h"
@@ -47,21 +33,18 @@ namespace DunnEngine {
 	{
 		OnInit();       // Call OnInit() outside of the main while loop to run it only once
 
-        std::chrono::high_resolution_clock::time_point start;           // Need to update Time class to be able to handle this
-        std::chrono::high_resolution_clock::time_point end;             // Need to update Time class to be able to handle this
-
         while (m_IsRunning)
         {
-            start = std::chrono::high_resolution_clock::now();
+            Time start;             // the time since the frame started
             OnEvent();
             Time::Update();
 
             Window::ClearWindow();
             OnUpdate();
             Window::UpdateWindow();
-            end = std::chrono::high_resolution_clock::now();
+            Time end;               // the time since the frame ended
 
-            FPS = (float)1e9 / (float)std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+            FPS = (float)1 / (start.GetElapsedTime() - end.GetElapsedTime()).asSeconds();       // 1 / frametime = FPS
         }
 
 	}
