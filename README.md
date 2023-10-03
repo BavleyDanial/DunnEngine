@@ -5,8 +5,8 @@ It is designed to run at 60+ FPS and the scripting language is C++ 17
 # Installaion
 - Clone the git repository by typing this command in the terminal
 ```git clone --recursive https://github.com/BavleyDanial/TDE.git```<br/> (Note: The path where you install the project MUST have no spaces for the project to run)
-- Then run the GenerateProjects.bat file, this will create a visual studio 2022 solution.
-- If you have an older version of visual studio you can edit the GenerateProjects.bat file to run vs(version name).<br/>
+- Run the GenerateProjects.bat file, this will create a visual studio 2022 solution.
+- If you have an older version of Visual Studio you can edit the GenerateProjects.bat file to run vs(version name).<br/>
   (2022 is the only version that has been tested but it should work on older visual studio versions and other IDEs).
 - If you have a different IDE that you want to use you can edit the GenerateProjects.bat to run a different IDE, more info on how to do so is here https://premake.github.io/docs/using-premake.<br/>
   (2022 is the only version that has been tested but it should work on older visual studio versions and other IDEs).
@@ -63,10 +63,10 @@ It is designed to run at 60+ FPS and the scripting language is C++ 17
   ```SetSmoothing(bool enabled)```: Sets the smoothing on the texts to true or false. disable for most crisp retro texts.<br/>
 
   ## Graphics class
-  ```DrawQuad(const glm::vec2& position, float rotationAngle, const glm::vec2& scale, const glm::vec4& color)```: Renders a square (or rectangle depending on the scale) with the specified data. rotation is anti-clockwise and scale should be 1 if no scaling is required.<br/>
+  ```DrawQuad(const glm::vec2& position, float rotationAngle, const glm::vec2& scale, const glm::vec4& color)```: Renders a square (or rectangle depending on the scale) with the specified data. rotation is anti-clockwise and the scale should be 1 if no scaling is required.<br/>
   ```DrawCircle(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color)```: Renders a circle (or ellipse) ith the specified data. scale should be 1 if no scaling is required.<br/>
   ```DrawTriangle(const glm::vec2& position, float rotationAngle, const glm::vec2& scale, const glm::vec4& color)```: Renders a triangle with the specified data. rotation is anti-clockwise and scale should be 1 if no scaling is required.<br/>
-  ```DrawSprite(DE_Texture* texture, const glm::vec2& position, float rotationAngle, const glm::vec2& scaler)```: Renders a sprite (with a texture that was loaded previously) with the specified data. rotation is anti-clockwise and scale should be 1 if no scaling is required.<br/>
+  ```DrawSprite(DE_Texture* texture, const glm::vec2& position, float rotationAngle, const glm::vec2& scaler)```: Renders a sprite (with a texture that was loaded previously) with the specified data. rotation is anti-clockwise and the scale should be 1 if no scaling is required.<br/>
   ```Print(Text& text, const glm::vec2& position, float rotationAngle, const glm::vec2& scale)```: Renders a text with the specified data. rotation is anti-clockwise and scale should be 1 if no scaling is required.<br/>
 
   ## AudioPlayer class
@@ -77,9 +77,7 @@ It is designed to run at 60+ FPS and the scripting language is C++ 17
   ```SetLoop(bool enabled)```: Enables looping to true or false. By enabling it the sound will play over and over again non-stop.<br/>
 
 # To-Do list
-- Adding a logging functionality
-- Fixing ASSERTs
-- Setting graphics commands
-- Adding a resource manager
-- Adding inputs
-- Adding math
+- Improve Time class API
+- Improve performance
+- Add support for other platforms (Linux and MAC)
+- Improve Draw API by reducing the number of arguments (Maybe add default values or add multiple versions of the function)
