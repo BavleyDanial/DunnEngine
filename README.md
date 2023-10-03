@@ -4,7 +4,7 @@ It is designed to run at 60+ FPS and the scripting language is C++ 17
 
 # Installaion
 - Clone the git repository by typing this command in the terminal
-```git clone --recursive https://github.com/BavleyDanial/TDE.git```
+```git clone --recursive https://github.com/BavleyDanial/TDE.git```<br/> (Note: The path where you install the project MUST have no spaces for the project to run)
 - Then run the GenerateProjects.bat file, this will create a visual studio 2022 solution.
 - If you have an older version of visual studio you can edit the GenerateProjects.bat file to run vs(version name).<br/>
   (2022 is the only version that has been tested but it should work on older visual studio versions and other IDEs).
