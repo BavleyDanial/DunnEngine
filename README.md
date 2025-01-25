@@ -2,6 +2,8 @@
 A 2D game engine made for DunnGames
 It is designed to run at 60+ FPS and the scripting language is C++ 17
 
+## Note: This project has been temporarily abandoned, planning for lots of new improvements (See the TODO at the end) for the future but for now I have other more interesting projects to work on.
+
 # Installaion
 - Clone the git repository by typing this command in the terminal
 ```git clone --recursive https://github.com/BavleyDanial/TDE.git```<br/> (Note: The path where you install the project MUST have no spaces for the project to run)
@@ -77,7 +79,9 @@ It is designed to run at 60+ FPS and the scripting language is C++ 17
   ```SetLoop(bool enabled)```: Enables looping to true or false. By enabling it the sound will play over and over again non-stop.<br/>
 
 # To-Do list
-- Improve Time class API
-- Improve performance
+- Improve APIs and reduce number of static methods.
+- Improve performance (reduce number of heap allocation, implement a data-oriented approach to programming instead of the heavy OOP one)
 - Add support for other platforms (Linux and MAC)
 - Improve Draw API by reducing the number of arguments (Maybe add default values or add multiple versions of the function)
+- Adding Batch Renering to reduce number of draw calls.
+- Fix ResourceManager class because it is so bad.
